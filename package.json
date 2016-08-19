@@ -1,0 +1,55 @@
+{
+  "name": "cloudnet",
+  "version": "0.0.1",
+  "description": "New super social network",
+  "main": "index.js",
+  "scripts": {
+    "start": "node_modules/.bin/webpack-dev-server --progress --hot --inline",
+    "build": "NODE_ENV=production node_modules/.bin/webpack -p --progress --colors",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stasyaner/cloudnet.git"
+  },
+  "keywords": [
+    "social",
+    "network",
+    "nodejs",
+    "react"
+  ],
+  "author": "stasyaner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stasyaner/cloudnet/issues"
+  },
+  "homepage": "https://github.com/stasyaner/cloudnet#readme",
+  "dependencies": {
+    "babel-core": "latest",
+    "babel-loader": "latest",
+    "babel-preset-es2015": "latest",
+    "babel-preset-react": "latest",
+    "bootstrap": "latest",
+    "css-loader": "latest",
+    "es6-promise": "latest",
+    "fetch-ie8": "latest",
+    "file-loader": "latest",
+    "less": "latest",
+    "less-loader": "latest",
+    "node-sass": "latest",
+    "object-assign": "latest",
+    "react": "latest",
+    "react-bootstrap": "latest",
+    "react-dom": "latest",
+    "react-hot-loader": "latest",
+    "react-redux": "latest",
+    "react-router": "latest",
+    "react-router-bootstrap": "latest",
+    "redux": "latest",
+    "sass-loader": "latest",
+    "style-loader": "latest",
+    "url-loader": "latest",
+    "webpack": "latest",
+    "webpack-dev-server": "latest"
+  }
+}
