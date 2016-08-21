@@ -10,3 +10,7 @@ span#top-menu-now-playing {
 a#top-menu-music {
   padding-top: 10px;
 }
+
+div.navbar-header {
+  font-weight: bold;
+}

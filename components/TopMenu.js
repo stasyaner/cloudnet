@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
-import {Navbar, Glyphicon,
-  NavItem, Nav, Button, Form, FormGroup, FormControl,
-  ProgressBar} from 'react-bootstrap';
+import {Navbar, Glyphicon, NavItem, Nav, Button, Form, FormGroup, FormControl,
+  ProgressBar, InputGroup} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {LinkContainer} from 'react-router-bootstrap'
 
@@ -18,7 +17,10 @@ export default (props) => {
           <Navbar.Form pullLeft>
             <Form>
               <FormGroup>
-                <FormControl id='searchIssueInput' type='text' placeholder='Search'/>
+                <InputGroup>
+                  <InputGroup.Addon><Glyphicon glyph='search'/></InputGroup.Addon>
+                  <FormControl type='text' placeholder='Поиск'/>
+                </InputGroup>
               </FormGroup>
             </Form>
           </Navbar.Form>
@@ -36,9 +38,8 @@ export default (props) => {
             <Glyphicon glyph='fast-forward'/>
           </NavItem>
           <NavItem id='top-menu-music'>
-              <span id='top-menu-now-playing'>Балалайка - Дрынь</span>
-              <span id='top-menu-music-progress'><ProgressBar now={60} /></span>
-            
+            <span id='top-menu-now-playing'>Балалайка - Дрынь</span>
+            <span id='top-menu-music-progress'><ProgressBar now={60} /></span>
           </NavItem>
         </Nav>
       </Navbar.Collapse>
