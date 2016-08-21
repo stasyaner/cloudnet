@@ -1,0 +1,12 @@
+span#top-menu-music-progress .progress {
+  height: 5px;
+  margin: 0;
+}
+
+span#top-menu-now-playing {
+  font-size: 12px;
+}
+
+a#top-menu-music {
+  padding-top: 10px;
+}

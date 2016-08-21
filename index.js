@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router';
 import Bootstrap from 'bootstrap/less/bootstrap';
 import Root from './containers/Root';
 import configureStore from './store';
+import Style from './css/style.css';
 
 render(
   <Root store={configureStore()} history={browserHistory}/>,

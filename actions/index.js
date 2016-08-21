@@ -21,6 +21,7 @@ export function fetchData(firebase, ref) {
 
     dispatch(startFetchingAction);
 
-    return firebase.database().ref(ref).on('value', snapshot => { dispatch( endFetchingAction(snapshot.val()) ) });
+    return firebase.database().ref(ref).on('value',
+      snapshot => { dispatch( endFetchingAction(snapshot.val()) ) });
   }
 }

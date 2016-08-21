@@ -1,20 +1,19 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {startFetchingAction, fetchData} from '../actions';
-import Hello from '../components/Hello';
+import TopMenu from '../components/TopMenu';
 
-class Index extends Component{
+class TopMenuContainer extends Component{
   constructor(){
     super(...arguments);
   }
 
   componentWillMount() {
-    //this.props.startFetching();
     this.props.fetchData(this.props.firebase, 'articles/1/name');
   }
 
   render() {
-    return (<Hello name={this.props.name}/>);
+    return (<TopMenu name={this.props.name}/>);
   }
 }
 
@@ -33,4 +32,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)
-  (Index);
+  (TopMenuContainer);

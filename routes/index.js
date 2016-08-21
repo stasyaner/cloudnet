@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {Route} from 'react-router';
-import Index from '../containers/Index';
+import TopMenuContainer from '../containers/TopMenuContainer';
 
 {/*<Route path="*" component={NoMatch}/>*/}
 
 export default (
-  <Route path='/' component={Index}>
+  <Route path='/' component={TopMenuContainer}>
   </Route>
 );
