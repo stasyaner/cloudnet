@@ -22,9 +22,32 @@ span#top-menu-avatar img {
 }
 
 div.navbar-header {
+  width: 150px;
   font-weight: bold;
 }
 
+.navbar > .container .navbar-brand {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.navbar-form {
+  padding: 0;
+}
+
 nav.navbar {
-    border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+}
+
+.list-group-item {
+  padding: 5px 15px;
+}
+
+.list-group-item:first-child, .list-group-item:last-child {
+  border-radius: 0px;
+  border-radius: 0px;
+}
+
+div#left-menu {
+  width: 170px;
 }
