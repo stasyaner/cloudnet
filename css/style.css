@@ -12,6 +12,7 @@ a#top-menu-music {
 }
 
 a#top-menu-account {
+  padding-top: 12px;
   padding-bottom: 0;
 }
 
@@ -27,12 +28,14 @@ div.navbar-header {
 }
 
 .navbar > .container .navbar-brand {
+  padding-top: 16px;
+  font-size: 24px;
   margin-left: 0;
   padding-left: 0;
 }
 
 .navbar-form {
-  padding: 0;
+  padding: 0 0 0 3px;
 }
 
 nav.navbar {

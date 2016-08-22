@@ -15,14 +15,12 @@ export default (props) => {
       <Navbar.Collapse>
         <Nav>
           <Navbar.Form pullLeft>
-            <Form>
-              <FormGroup>
-                <InputGroup>
-                  <InputGroup.Addon><Glyphicon glyph='search'/></InputGroup.Addon>
-                  <FormControl type='text' placeholder='Поиск'/>
-                </InputGroup>
-              </FormGroup>
-            </Form>
+            <FormGroup>
+              <InputGroup>
+                <InputGroup.Addon><Glyphicon glyph='search'/></InputGroup.Addon>
+                <FormControl type='text' placeholder='Поиск'/>
+              </InputGroup>
+            </FormGroup>
           </Navbar.Form>
           <LinkContainer to='/addIssue'>
             <NavItem>

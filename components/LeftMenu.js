@@ -7,6 +7,7 @@ export default (props) => {
   return (
     <ListGroup id='left-menu'>
       <ListGroupItem href='#'>Стена</ListGroupItem>
+      <ListGroupItem href='#'>Новости</ListGroupItem>
       <ListGroupItem href='#'>Друзья</ListGroupItem>
       <ListGroupItem href='#'>Фотографии</ListGroupItem>
       <ListGroupItem href='#'>Аудиозаписи</ListGroupItem>
