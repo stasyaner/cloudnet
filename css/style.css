@@ -11,6 +11,20 @@ a#top-menu-music {
   padding-top: 10px;
 }
 
+a#top-menu-account {
+  padding-bottom: 0;
+}
+
+span#top-menu-avatar img {
+  width: 25px;
+  height: 25px;
+  margin-left: 10px;
+}
+
 div.navbar-header {
   font-weight: bold;
+}
+
+nav.navbar {
+    border-radius: 0 0 4px 4px;
 }

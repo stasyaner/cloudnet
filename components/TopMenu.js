@@ -6,7 +6,7 @@ import {LinkContainer} from 'react-router-bootstrap'
 
 export default (props) => {
   return (
-    <Navbar fixedTop>
+    <Navbar >
       <Navbar.Header>
         <Navbar.Brand>
           <Link to='/'>CloudNET</Link>
@@ -40,6 +40,10 @@ export default (props) => {
           <NavItem id='top-menu-music'>
             <span id='top-menu-now-playing'>Балалайка - Дрынь</span>
             <span id='top-menu-music-progress'><ProgressBar now={60} /></span>
+          </NavItem>
+          <NavItem id='top-menu-account'>
+            <span id='top-menu-name'>Станислав</span>
+            <span id='top-menu-avatar'><img src='../avatar_sample.jpg'/></span>
           </NavItem>
         </Nav>
       </Navbar.Collapse>
