@@ -79,6 +79,15 @@ export function login(firebase, email, password) {
   }
 }
 
+export function logout(firebase) {
+  return dispatch => {
+    return firebase.auth().signOut().then(() => {
+      dispatch(authenticationRequiredAction());
+      browserHistory.push('/login');
+    });
+  }
+}
+
 export function fetchData(firebase, ref) {
   return function (dispatch) {
 

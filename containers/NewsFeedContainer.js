@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {initStoreAction, checkAuthentication} from '../actions';
+import {checkAuthentication} from '../actions';
 import NewsFeed from '../components/NewsFeed';
 
 class NewsFeedContainer extends Component{

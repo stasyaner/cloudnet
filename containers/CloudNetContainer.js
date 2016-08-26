@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-// import {startFetchingAction, fetchData} from '../actions';
+import {checkAuthentication, logout} from '../actions';
 import LeftMenu from '../components/LeftMenu';
 import TopMenu from '../components/TopMenu';
 
@@ -9,15 +9,15 @@ class CloudNetContainer extends Component{
     super(...arguments);
   }
 
-  // componentWillMount() {
-  //   this.props.fetchData(this.props.firebase, 'articles/1/name');
-  // }
+  componentWillMount() {
+    this.props.checkAuthentication(this.props.firebase);
+  }
 
   render() {
     return (
       <div>
-        <TopMenu />
-        <LeftMenu />
+        <TopMenu logout={() => {this.props.logout(this.props.firebase);}}/>
+        <LeftMenu visible={this.props.user ? true : false}/>
         {this.props.children}
       </div>
     );
@@ -26,15 +26,15 @@ class CloudNetContainer extends Component{
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    // firebase: state.firebase,
-    // name: state.data
+    firebase: state.firebase,
+    user: state.user
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    startFetching: () => dispatch(startFetchingAction()),
-    // fetchData: (firebase, ref) => dispatch(fetchData(firebase, ref)),
+    checkAuthentication: firebase => dispatch(checkAuthentication(firebase)),
+    logout: firebase => dispatch(logout(firebase))
   }
 }
 
