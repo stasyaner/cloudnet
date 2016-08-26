@@ -18,6 +18,7 @@ class CloudNetContainer extends Component{
       <div>
         <TopMenu />
         <LeftMenu />
+        {this.props.children}
       </div>
     );
   }
@@ -32,7 +33,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // startFetching: () => dispatch(startFetchingAction()),
+    startFetching: () => dispatch(startFetchingAction()),
     // fetchData: (firebase, ref) => dispatch(fetchData(firebase, ref)),
   }
 }

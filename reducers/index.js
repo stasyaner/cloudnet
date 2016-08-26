@@ -1,4 +1,5 @@
-import {START_FETCHING, END_FETCHING, fetchData} from '../actions';
+import {START_FETCHING, END_FETCHING, USER_AUTHENTICATING, USER_LOGIN,
+  USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED} from '../actions';
 import objectAssign from 'object-assign';
 import firebase from 'firebase';
 
@@ -16,7 +17,9 @@ function getInitialState() {
   return {
     firebase,
     fetching: false,
-    data: 'test'
+    authenticating: false,
+    user: firebase.auth().currentUser || {email: 'test'},
+    userLoginError: {}
   }
 }
 
@@ -34,7 +37,36 @@ const rootReducer = (state = getInitialState(), action) => {
         data: action.data
       });
       break;
-    };
+    }
+    case USER_AUTHENTICATING: {
+      return objectAssign({}, state, {
+        authenticating: true
+      });
+      break;
+    }
+    case USER_LOGIN: {
+      if (state.user === action.user) {
+        return state;
+      }
+      else {        
+        return objectAssign({}, state, {
+          user: action.user
+        });
+      }
+      break;
+    }
+    case USER_LOGIN_ERROR: {
+      return objectAssign({}, state, {
+        userLoginError: action.error
+      });
+      break;
+    }
+    case AUTHENTICATION_REQUIRED: {
+      return objectAssign({}, state, {
+        user: ''
+      });
+      break;
+    }
 
     default: {
       return state;

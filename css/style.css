@@ -1,3 +1,7 @@
+a:hover , a:focus {
+  text-decoration: none;
+}
+
 span#top-menu-music-progress .progress {
   height: 5px;
   margin: 0;
@@ -53,4 +57,27 @@ nav.navbar {
 
 div#left-menu {
   width: 170px;
+  float: left;
+}
+
+div.news-feed {
+  width: 955px;
+  --height: 900px;
+  float: left;
+  margin-left: 15px;
+  --overflow-y: scroll;
+}
+
+div.panel-heading {
+  padding: 5px 5px 3px 15px;
+}
+
+div.panel-footer {
+  font-size: 12px;
+  padding: 3px 5px 3px 15px;
+  background: none;
+}
+
+div.panel-footer .likes {
+  text-align: right;
 }
