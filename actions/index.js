@@ -70,7 +70,7 @@ export function login(firebase, email, password) {
     return firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {
         dispatch(userLoginAction(user));
-        browserHistory.push('/newsFeed');
+        browserHistory.push('/');
       })
       .catch(error => {
         dispatch(userLoginErrorAction(error));
@@ -84,6 +84,7 @@ export function logout(firebase) {
     return firebase.auth().signOut().then(() => {
       dispatch(authenticationRequiredAction());
       browserHistory.push('/login');
+      //might be error too
     });
   }
 }

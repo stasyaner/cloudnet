@@ -3,7 +3,7 @@ import {Form, FormGroup, FormControl, Checkbox, ControlLabel, Button, Col, Glyph
 
 export default (props) => {
   return (
-    <div style={{ float: 'left', width : 955}}>
+    <div className='container' id='login-page'>
       <Form horizontal name='user_login' onSubmit={(event) => {
         event.preventDefault();
         let form = document.forms['user_login'];
@@ -11,31 +11,31 @@ export default (props) => {
           form.elements['user_email'].value, form.elements['user_password'].value);
       }}>
         <FormGroup controlId='user_email'>
-          <Col componentClass={ControlLabel} md={2}>
+          <Col componentClass={ControlLabel} md={4}>
             Email
           </Col>
-          <Col md={5}>
+          <Col md={3}>
             <FormControl type='email' placeholder='Email' />
           </Col>
         </FormGroup>
 
         <FormGroup controlId='user_password'>
-          <Col componentClass={ControlLabel} md={2}>
+          <Col componentClass={ControlLabel} md={4}>
             Password
           </Col>
-          <Col md={5}>
+          <Col md={3}>
             <FormControl type='password' placeholder='Password' />
           </Col>
         </FormGroup>
 
         <FormGroup>
-          <Col mdOffset={2} md={5}>
+          <Col mdOffset={4} md={5}>
             <Checkbox>Remember me</Checkbox>
           </Col>
         </FormGroup>
 
         <FormGroup>
-          <Col mdOffset={2} md={5}>
+          <Col mdOffset={4} md={5}>
             <Button type='submit'>
               Sign in
             </Button>

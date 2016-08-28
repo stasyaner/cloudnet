@@ -1,5 +1,10 @@
+a {
+  outline: 0;
+}
+
 a:hover , a:focus {
   text-decoration: none;
+  background: none;
 }
 
 span#top-menu-music-progress .progress {
@@ -18,6 +23,10 @@ a#top-menu-music {
 a#top-menu-account {
   padding-top: 12px;
   padding-bottom: 0;
+}
+
+div.container#login-page {
+  margin-top: 100px;
 }
 
 span#top-menu-avatar img {

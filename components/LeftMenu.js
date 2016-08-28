@@ -4,8 +4,10 @@ import {Link} from 'react-router';
 import {LinkContainer} from 'react-router-bootstrap'
 
 export default (props) => {
+  let display;
+  if(props.visible === false) display = "none";
   return (
-    <ListGroup id='left-menu'>
+    <ListGroup id='left-menu' style={{display: display}}>
       <ListGroupItem href='#'>Стена</ListGroupItem>
       <LinkContainer to='newsFeed'>
         <ListGroupItem href='#'>Новости</ListGroupItem>

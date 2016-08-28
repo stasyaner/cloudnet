@@ -9,10 +9,6 @@ class CloudNetContainer extends Component{
     super(...arguments);
   }
 
-  componentWillMount() {
-    this.props.checkAuthentication(this.props.firebase);
-  }
-
   render() {
     return (
       <div>
@@ -33,7 +29,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    checkAuthentication: firebase => dispatch(checkAuthentication(firebase)),
     logout: firebase => dispatch(logout(firebase))
   }
 }

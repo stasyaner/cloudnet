@@ -9,7 +9,7 @@ class CloudNetContainer extends Component{
   }
 
   componentWillMount() {
-    checkAuthentication(this.props.firebase);
+    this.props.checkAuthentication(this.props.firebase);
   }
 
   render() {

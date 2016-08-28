@@ -43,13 +43,13 @@ export default (props) => {
             <span id='top-menu-name'>Станислав</span>
             <span id='top-menu-avatar'><img src='../avatar_sample.jpg'/></span>
           </NavItem>
-          <NavItem onClick={
+          <NavItem id='top-menu-logout' onClick={
             (event) => {
               event.preventDefault();
               props.logout();
             }
           }>
-            Выход
+            <Glyphicon glyph='log-out'/> Выход
           </NavItem>
         </Nav>
       </Navbar.Collapse>
