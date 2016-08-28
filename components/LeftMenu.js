@@ -4,12 +4,12 @@ import {Link} from 'react-router';
 import {LinkContainer} from 'react-router-bootstrap'
 
 export default (props) => {
-  let display;
-  if(props.visible === false) display = "none";
   return (
-    <ListGroup id='left-menu' style={{display: display}}>
-      <ListGroupItem>Стена</ListGroupItem>
-      <LinkContainer to='/'>
+    <ListGroup id='left-menu'>
+      <LinkContainer to='theWall/stasyaner'>
+        <ListGroupItem>Стена</ListGroupItem>
+      </LinkContainer>
+      <LinkContainer to='newsFeed'>
         <ListGroupItem>Новости</ListGroupItem>
       </LinkContainer>
       <ListGroupItem>Друзья</ListGroupItem>

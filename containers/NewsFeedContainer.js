@@ -1,15 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {checkAuthentication} from '../actions';
+//import {checkAuthentication} from '../actions';
 import NewsFeed from '../components/NewsFeed';
 
 class NewsFeedContainer extends Component{
   constructor() {
     super(...arguments);
-  }
-
-  componentWillMount() {
-    this.props.checkAuthentication(this.props.firebase);
   }
 
   render() {
@@ -30,7 +26,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    checkAuthentication: (firebase) => dispatch(checkAuthentication(firebase))
   }
 }
 

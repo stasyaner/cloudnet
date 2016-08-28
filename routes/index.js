@@ -3,12 +3,17 @@ import {Route, IndexRoute} from 'react-router';
 import CloudNetContainer from '../containers/CloudNetContainer';
 import NewsFeedContainer from '../containers/NewsFeedContainer';
 import LoginPageContainer from '../containers/LoginPageContainer';
+import TheWallContainer from '../containers/TheWallContainer';
+import CheckAuthenticationContainer from '../containers/CheckAuthenticationContainer';
 
 {/*<Route path="*" component={NoMatch}/>*/}
 
 export default (
-  <Route path='/' component={CloudNetContainer}>
-    <IndexRoute component={NewsFeedContainer}/>
+  <Route component={CheckAuthenticationContainer}>
     <Route path='login' component={LoginPageContainer}/>
+    <Route path='/' component={CloudNetContainer}>
+      <Route path='newsFeed' component={NewsFeedContainer}/>
+      <Route path='theWall/:userId' component={TheWallContainer}/>
+    </Route>
   </Route>
 );

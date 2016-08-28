@@ -1,22 +1,19 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {logout} from '../actions';
-import LeftMenu from '../components/LeftMenu';
-import TopMenu from '../components/TopMenu';
+import TheWall from '../components/TheWall';
+import {checkAuthentication} from '../actions';
 
 class CloudNetContainer extends Component{
   constructor() {
     super(...arguments);
   }
 
+  // componentWillMount() {
+  //   this.props.checkAuthentication(this.props.firebase);
+  // }
+
   render() {
-    return (
-      <div>
-        <TopMenu logout={() => {this.props.logout(this.props.firebase);}}/>
-        <LeftMenu />
-        {this.props.children}
-      </div>
-    );
+    return <TheWall />;
   }
 }
 
@@ -29,7 +26,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: firebase => dispatch(logout(firebase))
+    //checkAuthentication: (firebase) => dispatch(checkAuthentication(firebase))
   }
 }
 

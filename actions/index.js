@@ -57,6 +57,7 @@ export function checkAuthentication(firebase) {
       }
       else {
         dispatch(userLoginAction(user));
+        browserHistory.push('/');
       }
     });
   }
@@ -70,7 +71,7 @@ export function login(firebase, email, password) {
     return firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {
         dispatch(userLoginAction(user));
-        browserHistory.push('/');
+        browserHistory.push('/newsFeed');
       })
       .catch(error => {
         dispatch(userLoginErrorAction(error));
