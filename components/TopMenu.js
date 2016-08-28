@@ -22,16 +22,12 @@ export default (props) => {
               </InputGroup>
             </FormGroup>
           </Navbar.Form>
-          <LinkContainer to='/addIssue'>
-            <NavItem>
-              <Glyphicon glyph='fast-backward'/>
-            </NavItem>
-          </LinkContainer>
-          <LinkContainer to='/pieChart'>
-            <NavItem>
-              <Glyphicon glyph='play'/>
-            </NavItem>
-          </LinkContainer>
+          <NavItem>
+            <Glyphicon glyph='fast-backward'/>
+          </NavItem>
+          <NavItem>
+            <Glyphicon glyph='play'/>
+          </NavItem>
           <NavItem>
             <Glyphicon glyph='fast-forward'/>
           </NavItem>

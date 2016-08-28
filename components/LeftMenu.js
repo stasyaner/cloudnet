@@ -8,17 +8,17 @@ export default (props) => {
   if(props.visible === false) display = "none";
   return (
     <ListGroup id='left-menu' style={{display: display}}>
-      <ListGroupItem href='#'>Стена</ListGroupItem>
-      <LinkContainer to='newsFeed'>
-        <ListGroupItem href='#'>Новости</ListGroupItem>
+      <ListGroupItem>Стена</ListGroupItem>
+      <LinkContainer to='/'>
+        <ListGroupItem>Новости</ListGroupItem>
       </LinkContainer>
-      <ListGroupItem href='#'>Друзья</ListGroupItem>
-      <ListGroupItem href='#'>Фотографии</ListGroupItem>
-      <ListGroupItem href='#'>Аудиозаписи</ListGroupItem>
-      <ListGroupItem href='#'>Видеозаписи</ListGroupItem>
-      <ListGroupItem href='#'>
+      <ListGroupItem>Друзья</ListGroupItem>
+      <ListGroupItem>Фотографии</ListGroupItem>
+      <ListGroupItem>Аудиозаписи</ListGroupItem>
+      <ListGroupItem >Видеозаписи</ListGroupItem>
+      <ListGroupItem>
         <Glyphicon glyph='cog'/> Настройки
-        </ListGroupItem>
+      </ListGroupItem>
     </ListGroup>
   );
 }
