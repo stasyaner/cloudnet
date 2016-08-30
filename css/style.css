@@ -16,30 +16,32 @@ span#top-menu-now-playing {
   font-size: 12px;
 }
 
-a#top-menu-music {
+#top-menu-music {
   padding-top: 10px;
 }
 
-a#top-menu-account {
+.navbar #top-menu-fast-backward, #top-menu-fast-play {
+  padding: 15px 0 15px 15px;
+}
+
+#top-menu-account {
   padding-top: 12px;
   padding-bottom: 0;
 }
 
-a#top-menu-logout {
-  left: 230px;
+#top-menu-logout {
+  left: 280px;
 }
 
-div.container#login-page {
+.container#login-page {
   margin-top: 100px;
 }
 
-span#top-menu-avatar img {
-  width: 25px;
-  height: 25px;
+#top-menu-avatar img {
   margin-left: 10px;
 }
 
-div.navbar-header {
+.navbar-header {
   width: 150px;
   font-weight: bold;
 }
@@ -52,10 +54,19 @@ div.navbar-header {
 }
 
 .navbar-form {
-  padding: 0 0 0 3px;
+  padding: 0 0 0 17px;
 }
 
-nav.navbar {
+.navbar-form input {
+  width: 203px;
+  background: #fcfcfc;
+}
+
+.navbar-form input:focus {
+  background: #fff;
+}
+
+.navbar {
   border-radius: 0 0 4px 4px;
 }
 
@@ -68,29 +79,93 @@ nav.navbar {
   border-radius: 0px;
 }
 
-div#left-menu {
+#left-menu {
   width: 170px;
   float: left;
 }
 
-div.news-feed {
+#news-feed {
   width: 955px;
-  --height: 900px;
   float: left;
   margin-left: 15px;
-  --overflow-y: scroll;
 }
 
-div.panel-heading {
+.panel-heading {
   padding: 5px 5px 3px 15px;
 }
 
-div.panel-footer {
+.panel-footer {
   font-size: 12px;
   padding: 3px 5px 3px 15px;
   background: none;
 }
 
-div.panel-footer .likes {
+.panel-footer .likes {
   text-align: right;
+}
+
+#the-wall {
+  width: 955px;
+  float: left;
+  margin-left: 15px;
+}
+
+#the-wall-news-feed {
+  width: 740px;
+  float: right;
+  margin-top: 15px;
+}
+
+#the-wall-friends {
+  float: left;
+  width: 200px;
+  height: 200px;
+  margin-top: 15px;
+}
+
+#the-wall-profile-info, #the-wall-avatar {
+  float: left;
+}
+
+#the-wall-avatar {
+  padding-right: 15px;
+}
+
+#the-wall-profile-info {
+  width: 740px;
+  height: 200px;
+  font-size: 16px;
+}
+
+#the-wall-profile-info div {
+  float: left;
+}
+
+#the-wall-profile-info .col-md-3 {
+  padding-left: 0px;
+}
+
+#the-wall-profile-info-name {
+  width: 690px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#the-wall-profile-info-status {
+  width: 50px;
+  line-height: 28px;
+}
+
+#the-wall-profile-info-signature {
+  width: 100%;
+  font-size: 14px;
+}
+
+#the-wall-profile-info-delimiter {
+  width: 100%;
+}
+
+#the-wall-profile-info-delimiter hr {
+  width: 100%;
+  margin-top: 0px;
 }

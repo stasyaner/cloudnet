@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
-import {Form, FormGroup, FormControl, Checkbox, ControlLabel, Button, Col, Glyphicon} from 'react-bootstrap';
+import {Form, FormGroup, FormControl,
+  Checkbox, ControlLabel, Button, Col, Glyphicon} from 'react-bootstrap';
 
 export default (props) => {
   return (
@@ -30,7 +31,7 @@ export default (props) => {
 
         <FormGroup>
           <Col mdOffset={4} md={5}>
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>Не запоминать</Checkbox>
           </Col>
         </FormGroup>
 

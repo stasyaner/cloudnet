@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {browserHistory} from 'react-router'
 import {connect} from 'react-redux';
 import LoginPage from '../components/LoginPage';
 import {login, checkAuthentication} from '../actions';
@@ -8,15 +9,16 @@ class CloudNetContainer extends Component{
     super(...arguments);
   }
 
-  // componentWillMount() {
-  //   this.props.checkAuthentication(this.props.firebase);
-  // }
+  componentWillMount() {
+    if (this.props.user) {
+      browserHistory.push('/newsFeed');
+    };
+  }
 
   render() {
     return <LoginPage
       firebase={this.props.firebase}
       login={this.props.login}
-      user={this.props.user}
       authenticating={this.props.authenticating}/>;
   }
 }

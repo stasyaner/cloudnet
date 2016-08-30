@@ -133,5 +133,5 @@ export default (props) => {
     scrolledBefore = scrolled;
   }
 
-  return <div className='news-feed'>{newsFeedContent}</div>;
+  return <div id='news-feed'>{newsFeedContent}</div>;
 }

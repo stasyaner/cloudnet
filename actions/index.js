@@ -57,7 +57,6 @@ export function checkAuthentication(firebase) {
       }
       else {
         dispatch(userLoginAction(user));
-        browserHistory.push('/');
       }
     });
   }

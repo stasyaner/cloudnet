@@ -6,7 +6,7 @@ import {LinkContainer} from 'react-router-bootstrap'
 
 export default (props) => {
   return (
-    <Navbar >
+    <Navbar>
       <Navbar.Header>
         <Navbar.Brand>
           <Link to='/'>CloudNET</Link>
@@ -17,15 +17,14 @@ export default (props) => {
           <Navbar.Form pullLeft>
             <FormGroup>
               <InputGroup>
-                <InputGroup.Addon><Glyphicon glyph='search'/></InputGroup.Addon>
                 <FormControl type='text' placeholder='Поиск'/>
               </InputGroup>
             </FormGroup>
           </Navbar.Form>
-          <NavItem>
+          <NavItem id='top-menu-fast-backward'>
             <Glyphicon glyph='fast-backward'/>
           </NavItem>
-          <NavItem>
+          <NavItem id='top-menu-fast-play'>
             <Glyphicon glyph='play'/>
           </NavItem>
           <NavItem>
