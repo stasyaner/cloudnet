@@ -1,0 +1,21 @@
+{
+  "users": {
+    "stasyaner": {
+      "uid": "6nBw1O8gFYb5HFwjFtIbJCAVuOk1",
+      "displayName": "Станислав Сидлецкий",
+      "birthday": "10.05.1995",
+      "city": "Москва",
+      "univercity": "ТУСУР",
+      "friends": []
+    }
+  },
+
+  "news": {
+    "1": {
+      "author": "stasyaner",
+      "header": "test news #1",
+      "likes": [],
+      "reposts": []
+    }
+  }
+}

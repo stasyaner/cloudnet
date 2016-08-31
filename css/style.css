@@ -7,12 +7,12 @@ a:hover , a:focus {
   background: none;
 }
 
-span#top-menu-music-progress .progress {
+#top-menu-music-progress .progress {
   height: 5px;
   margin: 0;
 }
 
-span#top-menu-now-playing {
+#top-menu-now-playing {
   font-size: 12px;
 }
 
@@ -157,7 +157,7 @@ span#top-menu-now-playing {
 }
 
 #the-wall-profile-info-signature {
-  width: 100%;
+  width: 690px;
   font-size: 14px;
 }
 

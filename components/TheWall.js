@@ -3,6 +3,17 @@ import {Panel, Col, Glyphicon} from 'react-bootstrap';
 
 export default (props) => {
 
+  let {birthday, city, displayName, university, signature, status} = props.user;
+  let age;
+
+  if(birthday) {
+    age = new Date().getFullYear() - new Date(birthday).getFullYear();
+    birthday = new Date(birthday).toLocaleString('ru', {
+      year: 'numeric',
+      day: 'numeric',
+      month: 'long'});
+  }
+
   let headerContent = 'News #1';
   let footerContent = (
     <div className='likes'>
@@ -114,6 +125,7 @@ export default (props) => {
       </Panel>
     </div>
   );
+  
   return (
     <div id='the-wall'>
       <div id='the-wall-avatar'>
@@ -121,24 +133,25 @@ export default (props) => {
       </div>
 
       <div id='the-wall-profile-info'>
-        <div id='the-wall-profile-info-name'>Станислав Сидлецкий</div>
-        <div id='the-wall-profile-info-status'>Online</div>
-        <div id='the-wall-profile-info-signature'>карты, деньги, станислав</div>
+        <div id='the-wall-profile-info-name'>{displayName}</div>
+        <div id='the-wall-profile-info-status'>{status}</div>
+        <div id='the-wall-profile-info-signature'>{signature}</div>
         <div id='the-wall-profile-info-delimiter'><hr /></div>
 
         <Col md={3}>Родился:</Col>
         <Col md={9}>
-          <div id='the-wall-profile-info-birthday'>10 мая 1995 (21 год)</div>
+          <div id='the-wall-profile-info-birthday'>
+            {birthday}, {age} год(-а)</div>
         </Col>
 
         <Col md={3}>Город:</Col>
         <Col md={9}>
-          <div id='the-wall-profile-info-city'>Москва</div>
+          <div id='the-wall-profile-info-city'>{city}</div>
         </Col>
 
         <Col md={3}>Место учебы:</Col>
         <Col md={9}>
-          <div id='the-wall-profile-info-univercity'>ТУСУР</div>
+          <div id='the-wall-profile-info-univercity'>{university}</div>
         </Col>
       </div>
 

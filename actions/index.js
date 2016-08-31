@@ -14,11 +14,12 @@ export function startFetchingAction() {
   }
 }
 
-function endFetchingAction(data) {
+function endFetchingAction(statePropToFetch, value) {
   return {
     type: END_FETCHING,
     fetching: false,
-    data: data
+    statePropToFetch,
+    value
   }
 }
 
@@ -89,12 +90,24 @@ export function logout(firebase) {
   }
 }
 
-export function fetchData(firebase, ref) {
-  return function (dispatch) {
+function fetchData(ref, statePropToFetch) {
+  return (dispatch, getState) => {
+
+    const state = getState();
 
     dispatch(startFetchingAction);
 
-    return firebase.database().ref(ref).on('value',
-      snapshot => { dispatch( endFetchingAction(snapshot.val()) ) });
+    return state.firebase.database().ref(ref).on('value',
+      snapshot => {
+        if (snapshot.val() !== state.entities[statePropToFetch]) {
+          dispatch( endFetchingAction(statePropToFetch, snapshot.val()) ) ;
+        }
+    });
+  }
+}
+
+export function fetchUserInfo(id) {
+  return dispatch => {
+    return dispatch(fetchData('/users/' + id, 'users'));
   }
 }

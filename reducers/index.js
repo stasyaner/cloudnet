@@ -14,13 +14,24 @@ function getInitialState() {
   };
   firebase.initializeApp(firebaseConfig);
 
-  return {
+  let initialState = {
     firebase,
     fetching: false,
     authenticating: false,
-    user: firebase.auth().currentUser || {email: 'test'},
-    userLoginError: {}
-  }
+    selectedUser: {},
+    user: firebase.auth().currentUser || {},
+    userLoginError: {},
+    entities: {
+      users: {},
+      news: {}
+    }
+  };
+
+  // firebase.database().ref('/').once('value').then(snapshot => {
+  //   initialState.entities = objectAssign({}, initialState.entities, snapshot.val());
+  // }).catch(err => {console.log(err.message);});
+
+  return initialState;
 }
 
 const rootReducer = (state = getInitialState(), action) => {
@@ -32,9 +43,15 @@ const rootReducer = (state = getInitialState(), action) => {
       break;
     }
     case END_FETCHING: {
+      let value = objectAssign({}, state.entities[action.statePropToFetch], {
+        [action.value.id]: action.value
+      });
+
       return objectAssign({}, state, {
         fetching: false,
-        data: action.data
+        entities: {
+          [action.statePropToFetch]: value
+        }
       });
       break;
     }
@@ -48,7 +65,7 @@ const rootReducer = (state = getInitialState(), action) => {
       if (state.user === action.user) {
         return state;
       }
-      else {        
+      else {
         return objectAssign({}, state, {
           user: action.user
         });
