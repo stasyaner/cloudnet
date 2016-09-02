@@ -12,7 +12,7 @@ class CloudNetContainer extends Component{
   render() {
     return (
       <div>
-        <TopMenu logout={() => {this.props.logout(this.props.firebase);}}/>
+        <TopMenu logout={() => {this.props.logout()}}/>
         <LeftMenu />
         {this.props.children}
       </div>
@@ -22,14 +22,13 @@ class CloudNetContainer extends Component{
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    firebase: state.firebase,
     user: state.user
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: firebase => dispatch(logout(firebase))
+    logout: () => dispatch(logout())
   }
 }
 

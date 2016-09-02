@@ -49,9 +49,9 @@ function authenticationRequiredAction() {
   }
 }
 
-export function checkAuthentication(firebase) {
-  return dispatch => {
-    return firebase.auth().onAuthStateChanged(user => {
+export function checkAuthentication() {
+  return (dispatch, getState) => {
+    return getState().firebase.auth().onAuthStateChanged(user => {
       if (!user) {
         dispatch(authenticationRequiredAction());
         browserHistory.push('/login');
@@ -63,12 +63,12 @@ export function checkAuthentication(firebase) {
   }
 }
 
-export function login(firebase, email, password) {
-  return dispatch => {
+export function login(email, password) {
+  return (dispatch, getState) => {
 
     dispatch(userAuthenticatingAction());
 
-    return firebase.auth().signInWithEmailAndPassword(email, password)
+    return getState().firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {
         dispatch(userLoginAction(user));
         browserHistory.push('/newsFeed');
@@ -80,9 +80,9 @@ export function login(firebase, email, password) {
   }
 }
 
-export function logout(firebase) {
-  return dispatch => {
-    return firebase.auth().signOut().then(() => {
+export function logout() {
+  return (dispatch, getState) => {
+    return getState().firebase.auth().signOut().then(() => {
       dispatch(authenticationRequiredAction());
       browserHistory.push('/login');
       //might be error too

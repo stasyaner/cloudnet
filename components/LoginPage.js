@@ -8,8 +8,8 @@ export default (props) => {
       <Form horizontal name='user_login' onSubmit={(event) => {
         event.preventDefault();
         let form = document.forms['user_login'];
-        props.login(props.firebase,
-          form.elements['user_email'].value, form.elements['user_password'].value);
+        props.login(form.elements['user_email'].value,
+          form.elements['user_password'].value);
       }}>
         <FormGroup controlId='user_email'>
           <Col componentClass={ControlLabel} md={4}>

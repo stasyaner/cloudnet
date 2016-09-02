@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux';
 import LoginPage from '../components/LoginPage';
-import {login, checkAuthentication} from '../actions';
+import {login} from '../actions';
 
 class CloudNetContainer extends Component{
   constructor() {
@@ -17,7 +17,6 @@ class CloudNetContainer extends Component{
 
   render() {
     return <LoginPage
-      firebase={this.props.firebase}
       login={this.props.login}
       authenticating={this.props.authenticating}/>;
   }
@@ -25,7 +24,6 @@ class CloudNetContainer extends Component{
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    firebase: state.firebase,
     authenticating: state.authenticating,
     user: state.user
   }
@@ -33,8 +31,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    checkAuthentication: (firebase) => dispatch(checkAuthentication(firebase)),
-    login: (firebase, email, password) => dispatch(login(firebase, email, password))
+    login: (email, password) => dispatch(login(email, password))
   }
 }
 
