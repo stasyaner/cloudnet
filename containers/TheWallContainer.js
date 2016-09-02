@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import TheWall from '../components/TheWall';
-import {fetchUserInfo} from '../actions';
+import {fetchUserInfo, fetchUserNews} from '../actions';
 
 class CloudNetContainer extends Component{
   constructor() {
@@ -10,23 +10,26 @@ class CloudNetContainer extends Component{
 
   componentWillMount() {
     this.props.fetchUserInfo(this.props.userId);
+    this.props.fetchUserNews(this.props.userId);
   }
 
   render() {
-    return <TheWall user={this.props.theWallOfUser}/>;
+    return <TheWall userInfo={this.props.userInfo} news={this.props.news}/>;
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
     userId: ownProps.params.userId,
-    theWallOfUser: state.entities.users[ownProps.params.userId] || {}
+    userInfo: state.entities.users[ownProps.params.userId] || {},
+    news: state.entities.news || {}
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUserInfo: id => dispatch(fetchUserInfo(id))
+    fetchUserInfo: id => dispatch(fetchUserInfo(id)),
+    fetchUserNews: id => dispatch(fetchUserNews(id))
   }
 }
 

@@ -90,24 +90,53 @@ export function logout(firebase) {
   }
 }
 
-function fetchData(ref, statePropToFetch) {
+// function fetchData(ref, statePropToFetch, callback) {
+//   return (dispatch, getState) => {
+//
+//     const state = getState();
+//
+//     dispatch(startFetchingAction);
+//
+//     return state.firebase.database().ref(ref).on('value',
+//       snapshot => {
+//         if (snapshot.val() !== state.entities[statePropToFetch]) {
+//           dispatch( endFetchingAction(statePropToFetch, snapshot.val()) ) ;
+//         }
+//     });
+//   }
+// }
+
+export function fetchUserInfo(id) {
   return (dispatch, getState) => {
 
     const state = getState();
 
     dispatch(startFetchingAction);
 
-    return state.firebase.database().ref(ref).on('value',
+    return state.firebase.database().ref('/users/' + id).on('value',
       snapshot => {
-        if (snapshot.val() !== state.entities[statePropToFetch]) {
-          dispatch( endFetchingAction(statePropToFetch, snapshot.val()) ) ;
+        if (snapshot.val() !== state.entities.users[id]) {
+          dispatch( endFetchingAction('users', snapshot.val()) ) ;
         }
     });
   }
 }
 
-export function fetchUserInfo(id) {
-  return dispatch => {
-    return dispatch(fetchData('/users/' + id, 'users'));
+export function fetchUserNews(id) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+
+    dispatch(startFetchingAction);
+
+    let userNews = state.firebase.database().ref('users/' + id + '/news');
+    let news = state.firebase.database().ref('news');
+
+    return userNews.on('child_added',
+      singleUserNews => {
+        news.child(singleUserNews.val()).on('value', singleNews => {
+          dispatch( endFetchingAction('news', singleNews.val()) ) ;
+        });
+    });
   }
 }

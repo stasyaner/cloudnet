@@ -49,9 +49,9 @@ const rootReducer = (state = getInitialState(), action) => {
 
       return objectAssign({}, state, {
         fetching: false,
-        entities: {
+        entities: objectAssign({}, state.entities, {
           [action.statePropToFetch]: value
-        }
+        })
       });
       break;
     }
