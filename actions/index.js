@@ -1,7 +1,8 @@
 import {browserHistory} from 'react-router';
 
 export const START_FETCHING = 'START_FETCHING';
-export const END_FETCHING = 'END_FETCHING';
+export const ADD_ENTITY = 'ADD_ENTITY';
+export const REMOVE_ENTITY = 'REMOVE_ENTITY';
 export const USER_AUTHENTICATING = 'USER_AUTHENTICATING';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR';
@@ -14,12 +15,21 @@ export function startFetchingAction() {
   }
 }
 
-function endFetchingAction(statePropToFetch, value) {
+function addEntityAction(entityGroup, entity) {
   return {
-    type: END_FETCHING,
+    type: ADD_ENTITY,
     fetching: false,
-    statePropToFetch,
-    value
+    entityGroup,
+    entity
+  }
+}
+
+function removeEntityAction(entityGroup, id) {
+  return {
+    type: REMOVE_ENTITY,
+    fetching: false,
+    entityGroup,
+    id
   }
 }
 
@@ -51,7 +61,7 @@ function authenticationRequiredAction() {
 
 export function checkAuthentication() {
   return (dispatch, getState) => {
-    return getState().firebase.auth().onAuthStateChanged(user => {
+    getState().firebase.auth().onAuthStateChanged(user => {
       if (!user) {
         dispatch(authenticationRequiredAction());
         browserHistory.push('/login');
@@ -68,7 +78,7 @@ export function login(email, password) {
 
     dispatch(userAuthenticatingAction());
 
-    return getState().firebase.auth().signInWithEmailAndPassword(email, password)
+    getState().firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {
         dispatch(userLoginAction(user));
         browserHistory.push('/newsFeed');
@@ -76,13 +86,12 @@ export function login(email, password) {
       .catch(error => {
         dispatch(userLoginErrorAction(error));
       });
-
   }
 }
 
 export function logout() {
   return (dispatch, getState) => {
-    return getState().firebase.auth().signOut().then(() => {
+    getState().firebase.auth().signOut().then(() => {
       dispatch(authenticationRequiredAction());
       browserHistory.push('/login');
       //might be error too
@@ -90,53 +99,40 @@ export function logout() {
   }
 }
 
-// function fetchData(ref, statePropToFetch, callback) {
-//   return (dispatch, getState) => {
-//
-//     const state = getState();
-//
-//     dispatch(startFetchingAction);
-//
-//     return state.firebase.database().ref(ref).on('value',
-//       snapshot => {
-//         if (snapshot.val() !== state.entities[statePropToFetch]) {
-//           dispatch( endFetchingAction(statePropToFetch, snapshot.val()) ) ;
-//         }
-//     });
-//   }
-// }
-
 export function fetchUserInfo(id) {
   return (dispatch, getState) => {
 
     const state = getState();
 
-    dispatch(startFetchingAction);
+    dispatch(startFetchingAction());
 
-    return state.firebase.database().ref('/users/' + id).on('value',
+    state.firebase.database().ref('/users/' + id).on('value',
       snapshot => {
         if (snapshot.val() !== state.entities.users[id]) {
-          dispatch( endFetchingAction('users', snapshot.val()) ) ;
+          dispatch( addEntityAction('users', snapshot.val()) ) ;
         }
     });
   }
 }
 
+
 export function fetchUserNews(id) {
   return (dispatch, getState) => {
 
+    dispatch(startFetchingAction());
+
     const state = getState();
-
-    dispatch(startFetchingAction);
-
     let userNews = state.firebase.database().ref('users/' + id + '/news');
     let news = state.firebase.database().ref('news');
 
-    return userNews.on('child_added',
-      singleUserNews => {
-        news.child(singleUserNews.val()).on('value', singleNews => {
-          dispatch( endFetchingAction('news', singleNews.val()) ) ;
-        });
+    userNews.on('child_added', newsId => {
+      news.child(newsId.val()).on('value', singleNews => {
+        dispatch( addEntityAction('news', singleNews.val()) ) ;
+      });
+    });
+
+    userNews.on('child_removed', newsId => {
+      dispatch( removeEntityAction('news', newsId.val()) ) ;
     });
   }
 }

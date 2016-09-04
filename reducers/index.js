@@ -1,5 +1,5 @@
-import {START_FETCHING, END_FETCHING, USER_AUTHENTICATING, USER_LOGIN,
-  USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED} from '../actions';
+import {START_FETCHING, ADD_ENTITY, REMOVE_ENTITY, USER_AUTHENTICATING,
+  USER_LOGIN, USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED} from '../actions';
 import objectAssign from 'object-assign';
 import firebase from 'firebase';
 
@@ -42,17 +42,24 @@ const rootReducer = (state = getInitialState(), action) => {
       });
       break;
     }
-    case END_FETCHING: {
-      let value = objectAssign({}, state.entities[action.statePropToFetch], {
-        [action.value.id]: action.value
+    case ADD_ENTITY: {
+      let value = objectAssign({}, state.entities[action.entityGroup], {
+        [action.entity.id]: action.entity
       });
 
       return objectAssign({}, state, {
         fetching: false,
         entities: objectAssign({}, state.entities, {
-          [action.statePropToFetch]: value
+          [action.entityGroup]: value
         })
       });
+      break;
+    }
+    case REMOVE_ENTITY: {
+      let newState = objectAssign({}, state, {});
+      delete newState.entities[action.entityGroup][action.id];
+
+      return objectAssign({}, state, newState);
       break;
     }
     case USER_AUTHENTICATING: {
