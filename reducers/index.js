@@ -58,6 +58,7 @@ const rootReducer = (state = getInitialState(), action) => {
     case REMOVE_ENTITY: {
       let newState = objectAssign({}, state, {});
       delete newState.entities[action.entityGroup][action.id];
+      newState.fetching = false;
 
       return objectAssign({}, state, newState);
       break;

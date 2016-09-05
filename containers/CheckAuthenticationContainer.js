@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {checkAuthentication} from '../actions';
 
-class CloudNetContainer extends Component{
+class CheckAuthenticationContainer extends Component{
   constructor() {
     super(...arguments);
   }
@@ -28,4 +28,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)
-  (CloudNetContainer);
+  (CheckAuthenticationContainer);

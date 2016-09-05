@@ -122,7 +122,7 @@ export function fetchUserNews(id) {
     dispatch(startFetchingAction());
 
     const state = getState();
-    let userNews = state.firebase.database().ref('users/' + id + '/news');
+    let userNews = state.firebase.database().ref('users/' + id + '/news');//.limitToFirst(1);
     let news = state.firebase.database().ref('news');
 
     userNews.on('child_added', newsId => {
