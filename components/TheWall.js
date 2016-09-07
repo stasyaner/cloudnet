@@ -21,8 +21,13 @@ export default (props) => {
     for(let key in props.news) {
       let footerContent= (
         <div className='likes'>
-          <a href='#'>
-            {props.news[key].likes ? props.news[key].likes.length : 0}
+          <a onClick={
+            (event) => {
+              event.preventDefault();
+              props.like(props.news[key].id);
+            }
+          }>
+            {props.news[key].likes ? Object.keys(props.news[key].likes).length : 0}
             {' '}
             <Glyphicon glyph='heart'/> Лайков
           </a>

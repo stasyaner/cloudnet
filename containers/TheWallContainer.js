@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import TheWall from '../components/TheWall';
-import {fetchUserInfo, fetchUserNews, addNews, removeNews} from '../actions';
+import {fetchUserInfo, fetchUserNews, addNews, removeNews,
+  like} from '../actions';
 
 class CloudNetContainer extends Component{
   constructor() {
@@ -19,7 +20,8 @@ class CloudNetContainer extends Component{
         userInfo={this.props.userInfo}
         news={this.props.news}
         addNews={(news) => {this.props.addNews(this.props.userId, news)}}
-        removeNews={(newsId) => {this.props.removeNews(this.props.userId, newsId)}}/>
+        removeNews={(newsId) => {this.props.removeNews(this.props.userId, newsId)}}
+        like={(newsId) => {this.props.like(this.props.userId, newsId)}}/>
     );
   }
 }
@@ -37,7 +39,8 @@ const mapDispatchToProps = (dispatch) => {
     fetchUserInfo: id => dispatch(fetchUserInfo(id)),
     fetchUserNews: id => dispatch(fetchUserNews(id)),
     addNews: (id, news) => dispatch(addNews(id, news)),
-    removeNews: (userId, newsId) => dispatch(removeNews(userId, newsId))
+    removeNews: (userId, newsId) => dispatch(removeNews(userId, newsId)),
+    like: (userId, newsId) => dispatch(like(userId, newsId))
   }
 }
 

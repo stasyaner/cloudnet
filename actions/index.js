@@ -175,3 +175,26 @@ export function removeNews(userId, newsId) {
     state.firebase.database().ref().update(update);
   }
 }
+
+export function like(userId, newsId) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    let newsLikesRef = state.firebase.database().ref('news/' + newsId +'/likes');
+
+    newsLikesRef.child(userId).once('value').then(like => {
+      if (like.val()) {
+        newsLikesRef.update({
+          [userId]: null
+        });
+      }
+      else {
+        newsLikesRef.set({
+          [userId]: {
+            timestamp: new Date().getTime()
+          }
+        });
+      }
+    });
+  }
+}
