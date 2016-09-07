@@ -112,7 +112,8 @@ a:hover , a:focus {
 
 #the-wall-news-feed {
   width: 740px;
-  float: right;
+  float: left;
+  margin-left: 15px;
   margin-top: 15px;
 }
 
@@ -168,4 +169,55 @@ a:hover , a:focus {
 #the-wall-profile-info-delimiter hr {
   width: 100%;
   margin-top: 0px;
+}
+
+#the-wall-publish-news-form {
+  clear: both;
+  margin-bottom: 30px;
+}
+
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+}
+
+#the-wall-publish-news-textarea:empty {
+  color: #999;
+}
+
+#the-wall-publish-news-textarea {
+  width: 100%;
+  padding: 15px;
+  outline: none;
+  color: black;
+  border: 1px solid #ddd;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  resize: none;
+  min-height: 40px;
+  border-radius: 0;
+}
+
+#the-wall-publish-news-form button {
+  position: relative;
+  border-radius: 0;
+  left: 633px;
+}
+
+.the-wall-remove-news {
+  position: relative;
+  left: 710px;
+  top: -15px;
+  margin-bottom: -15px;
+}
+
+.the-wall-remove-news a {
+  font-size: 11px;
+  color: #ccc;
+  opacity: 0.2;
+  cursor: pointer;
+}
+
+.the-wall-remove-news a:hover {
+  opacity: 0.3;
+  color: #cc0000;
 }

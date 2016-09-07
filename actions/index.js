@@ -61,12 +61,15 @@ function authenticationRequiredAction() {
 
 export function checkAuthentication() {
   return (dispatch, getState) => {
-    getState().firebase.auth().onAuthStateChanged(user => {
+
+    const state = getState();
+
+    state.firebase.auth().onAuthStateChanged(user => {
       if (!user) {
         dispatch(authenticationRequiredAction());
         browserHistory.push('/login');
       }
-      else {
+      else if (state.user !== user) {
         dispatch(userLoginAction(user));
       }
     });
@@ -122,17 +125,53 @@ export function fetchUserNews(id) {
     dispatch(startFetchingAction());
 
     const state = getState();
-    let userNews = state.firebase.database().ref('users/' + id + '/news');//.limitToFirst(1);
-    let news = state.firebase.database().ref('news');
+    let userNewsRef = state.firebase.database().ref('users/' + id + '/news');//.limitToFirst(1);
+    let newsRef = state.firebase.database().ref('news');
 
-    userNews.on('child_added', newsId => {
-      news.child(newsId.val()).on('value', singleNews => {
-        dispatch( addEntityAction('news', singleNews.val()) ) ;
+    userNewsRef.on('child_added', newsId => {
+      newsRef.child(newsId.val()).on('value', singleNews => {
+        if (singleNews.val()) {
+          if (!state.entities.news.hasOwnProperty(singleNews.val().id)) {
+            dispatch( addEntityAction('news', singleNews.val()) ) ;
+          }
+        }
       });
     });
 
-    userNews.on('child_removed', newsId => {
+    userNewsRef.on('child_removed', newsId => {
       dispatch( removeEntityAction('news', newsId.val()) ) ;
     });
+  }
+}
+
+export function addNews(userId, news) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    let userNewsRef = state.firebase.database().ref('users/' + userId + '/news');
+
+    news.author = userId;
+    news.id = userNewsRef.push().key;
+
+    let update = {
+      ['users/' + userId + '/news/' + news.id]: news.id,
+      ['news/' + news.id]: news
+    };
+
+    state.firebase.database().ref().update(update);
+  }
+}
+
+export function removeNews(userId, newsId) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+
+    let update = {
+      ['users/' + userId + '/news/' + newsId]: null,
+      ['news/' + newsId]: null
+    };
+
+    state.firebase.database().ref().update(update);
   }
 }

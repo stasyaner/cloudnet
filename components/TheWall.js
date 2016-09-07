@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
-import {Panel, Col, Glyphicon} from 'react-bootstrap';
+import {Form, FormGroup, FormControl, Button, Panel, Col,
+  Glyphicon, Collapse} from 'react-bootstrap';
 
 export default (props) => {
 
@@ -21,16 +22,42 @@ export default (props) => {
       let footerContent= (
         <div className='likes'>
           <a href='#'>
-            {props.news[key].likes.length} <Glyphicon glyph='heart'/> Лайков
+            {props.news[key].likes ? props.news[key].likes.length : 0}
+            {' '}
+            <Glyphicon glyph='heart'/> Лайков
           </a>
         </div>
       );
 
       newsFeedContent.push(
         <Panel footer={footerContent} key={props.news[key].id}>
+          <div className='the-wall-remove-news'><a
+            onClick={
+              (event) => {
+                event.preventDefault();
+                if (confirm('Вы действительно хотите удалить новость?')) {
+                  props.removeNews(props.news[key].id);
+                }
+              }
+            }>
+            <Glyphicon glyph='remove'/>
+          </a></div>
           {props.news[key].content}
         </Panel>
       );
+    }
+  }
+
+  function onSubmit(event) {
+    event.preventDefault();
+    let textArea = document.getElementById('the-wall-publish-news-textarea');
+    let content = textArea.textContent;
+    if (content) {
+      props.addNews({
+        content,
+        timestamp: new Date().getTime()
+      });
+      textArea.innerText = '';
     }
   }
 
@@ -67,7 +94,23 @@ export default (props) => {
         sfdsfdsf
       </div>
 
-      <div id='the-wall-news-feed'>{newsFeedContent}</div>
+      <div id='the-wall-news-feed'>
+
+        <Form id='the-wall-publish-news-form' onSubmit={onSubmit}>
+          <FormGroup controlId='the-wall-publish-news-form-text'>
+            <div id='the-wall-publish-news-textarea'
+              placeholder='Поделиться новостью'
+              contentEditable='true'>
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Button type='submit'>Поделиться</Button>
+          </FormGroup>
+        </Form>
+
+        {newsFeedContent}
+      </div>
     </div>
   );
 }
