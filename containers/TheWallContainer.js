@@ -10,8 +10,15 @@ class CloudNetContainer extends Component{
   }
 
   componentWillMount() {
-    this.props.fetchUserInfo(this.props.userId);
-    this.props.fetchUserNews(this.props.userId);
+    this.props.fetchUserInfo();
+    this.props.fetchUserNews();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.userId !== nextProps.userId) {
+      nextProps.fetchUserInfo();
+      nextProps.fetchUserNews();
+    }
   }
 
   render() {
@@ -19,9 +26,9 @@ class CloudNetContainer extends Component{
       <TheWall
         userInfo={this.props.userInfo}
         news={this.props.news}
-        addNews={(news) => {this.props.addNews(this.props.userId, news)}}
-        removeNews={(newsId) => {this.props.removeNews(this.props.userId, newsId)}}
-        like={(newsId) => {this.props.like(this.props.userId, newsId)}}/>
+        addNews={this.props.addNews}
+        removeNews={this.props.removeNews}
+        like={this.props.like}/>
     );
   }
 }
@@ -34,13 +41,13 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    fetchUserInfo: id => dispatch(fetchUserInfo(id)),
-    fetchUserNews: id => dispatch(fetchUserNews(id)),
-    addNews: (id, news) => dispatch(addNews(id, news)),
-    removeNews: (userId, newsId) => dispatch(removeNews(userId, newsId)),
-    like: (userId, newsId) => dispatch(like(userId, newsId))
+    fetchUserInfo: () => dispatch(fetchUserInfo(ownProps.params.userId)),
+    fetchUserNews: () => dispatch(fetchUserNews(ownProps.params.userId)),
+    addNews: news => dispatch(addNews(ownProps.params.userId, news)),
+    removeNews: newsId => dispatch(removeNews(ownProps.params.userId, newsId)),
+    like: newsId => dispatch(like(ownProps.params.userId, newsId))
   }
 }
 

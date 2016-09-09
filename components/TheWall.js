@@ -1,12 +1,18 @@
 import React, {PropTypes} from 'react';
 import {Form, FormGroup, FormControl, Button, Panel, Col,
-  Glyphicon, Collapse} from 'react-bootstrap';
+  Glyphicon, Collapse, Badge} from 'react-bootstrap';
+import {Link} from 'react-router';
 
 export default (props) => {
 
   let {birthday, city, displayName, university, signature,
-    status} = props.userInfo;
+    status, avatar} = props.userInfo;
   let age;
+
+  let avatarLink='';
+  if (avatar) {
+    avatarLink=avatar.thumbnails.theWall;
+  }
 
   if(birthday) {
     age = new Date().getFullYear() - new Date(birthday).getFullYear();
@@ -19,6 +25,7 @@ export default (props) => {
   let newsFeedContent = [];
   if (props.news) {
     for(let key in props.news) {
+      if (props.news[key].author === props.userInfo.id) {
       let footerContent= (
         <div className='likes'>
           <a onClick={
@@ -50,8 +57,12 @@ export default (props) => {
           {props.news[key].content}
         </Panel>
       );
+
+      }
     }
   }
+
+  let friendsPanelHeader = <div><div>Друзья</div><Badge>42</Badge></div>;
 
   function onSubmit(event) {
     event.preventDefault();
@@ -68,35 +79,42 @@ export default (props) => {
 
   return (
     <div id='the-wall'>
-      <div id='the-wall-avatar'>
-        <img src='../avatar_sample_wall.jpg' />
-      </div>
+      <div id='the-wall-head'>
+        <div id='the-wall-avatar'>
+          <img src={avatarLink} />
+        </div>
 
-      <div id='the-wall-profile-info'>
-        <div id='the-wall-profile-info-name'>{displayName}</div>
-        <div id='the-wall-profile-info-status'>{status}</div>
-        <div id='the-wall-profile-info-signature'>{signature}</div>
-        <div id='the-wall-profile-info-delimiter'><hr /></div>
+        <div id='the-wall-profile-info'>
+          <div id='the-wall-profile-info-name'>{displayName}</div>
+          <div id='the-wall-profile-info-status'>{status}</div>
+          <div id='the-wall-profile-info-signature'>{signature}</div>
+          <div id='the-wall-profile-info-delimiter'><hr /></div>
 
-        <Col md={3}>Родился:</Col>
-        <Col md={9}>
-          <div id='the-wall-profile-info-birthday'>
-            {birthday}, {age} год(-а)</div>
-        </Col>
 
-        <Col md={3}>Город:</Col>
-        <Col md={9}>
-          <div id='the-wall-profile-info-city'>{city}</div>
-        </Col>
+          <Col md={3}>Родился:</Col>
+          <Col md={9}>
+            <div id='the-wall-profile-info-birthday'>
+              {birthday}, {age} год(-а)</div>
+          </Col>
 
-        <Col md={3}>Место учебы:</Col>
-        <Col md={9}>
-          <div id='the-wall-profile-info-univercity'>{university}</div>
-        </Col>
+          <Col md={3}>Город:</Col>
+          <Col md={9}>
+            <div id='the-wall-profile-info-city'>{city}</div>
+          </Col>
+
+          <Col md={3}>Место учебы:</Col>
+          <Col md={9}>
+            <div id='the-wall-profile-info-univercity'>{university}</div>
+          </Col>
+        </div>
       </div>
 
       <div id='the-wall-friends'>
-        sfdsfdsf
+        <Panel header={friendsPanelHeader}>
+          <div className='the-wall-friend'>
+            <Link to='/theWall/mizantronix'>Андрей Гулиганов</Link>
+          </div>
+        </Panel>
       </div>
 
       <div id='the-wall-news-feed'>

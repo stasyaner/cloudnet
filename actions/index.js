@@ -109,15 +109,14 @@ export function fetchUserInfo(id) {
 
     dispatch(startFetchingAction());
 
-    state.firebase.database().ref('/users/' + id).on('value',
+    state.firebase.database().ref('users/' + id).on('value',
       snapshot => {
-        if (snapshot.val() !== state.entities.users[id]) {
-          dispatch( addEntityAction('users', snapshot.val()) ) ;
+        if (!state.entities.users[id]) {
+          dispatch( addEntityAction('users', snapshot.val()) );
         }
     });
   }
 }
-
 
 export function fetchUserNews(id) {
   return (dispatch, getState) => {
@@ -146,7 +145,7 @@ export function fetchUserNews(id) {
 
 export function addNews(userId, news) {
   return (dispatch, getState) => {
-
+console.log('addnews ' + userId);
     const state = getState();
     let userNewsRef = state.firebase.database().ref('users/' + userId + '/news');
 
@@ -189,12 +188,37 @@ export function like(userId, newsId) {
         });
       }
       else {
-        newsLikesRef.set({
+        newsLikesRef.update({
           [userId]: {
             timestamp: new Date().getTime()
           }
         });
       }
     });
+  }
+}
+
+export function fetchUserFriends(id) {
+  return (dispatch, getState) => {
+
+    dispatch(startFetchingAction());
+
+    const state = getState();
+    let userFriendsRef = state.firebase.database().ref('users/' + id + '/friends');
+    let usersRef = state.firebase.database().ref('users');
+
+    userFriendsRef.on('child_added', friendId => {
+      usersRef.child(friendId.val()).on('value', singleFriend => {
+        if (singleFriend.val()) {
+          if (!state.entities.users.hasOwnProperty(singleFriend.val().id)) {
+            dispatch( addEntityAction('users', singleFriend.val()) ) ;
+          }
+        }
+      });
+    });
+
+    // userNewsRef.on('child_removed', newsId => {
+    //   dispatch( removeEntityAction('news', newsId.val()) ) ;
+    // });
   }
 }

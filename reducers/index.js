@@ -14,6 +14,12 @@ function getInitialState() {
   };
   firebase.initializeApp(firebaseConfig);
 
+  // firebase.storage().ref('avatars/thumbnails/mizantronix_wall.jpg').getDownloadURL()
+  // .then(url => {
+  //   console.log(url);
+  // });
+
+
   let initialState = {
     firebase,
     fetching: false,

@@ -121,16 +121,20 @@ a:hover , a:focus {
 #the-wall-friends {
   float: left;
   width: 200px;
-  height: 200px;
   margin-top: 15px;
 }
 
-#the-wall-profile-info, #the-wall-avatar {
+#the-wall-profile-info, #the-wall-avatar, #the-wall-head {
   float: left;
 }
 
 #the-wall-avatar {
   padding-right: 15px;
+}
+
+#the-wall-avatar img {
+  width: 200px;
+  min-height: 200px;
 }
 
 #the-wall-profile-info {
@@ -173,7 +177,6 @@ a:hover , a:focus {
 }
 
 #the-wall-publish-news-form {
-  clear: both;
   margin-bottom: 30px;
 }
 
@@ -220,4 +223,13 @@ a:hover , a:focus {
 .the-wall-remove-news a:hover {
   opacity: 0.3;
   color: #cc0000;
+}
+
+#the-wall-friends .panel-title {
+  font-size: 14px;
+}
+
+#the-wall-friends .panel-heading div div {
+  float: left;
+  padding-right: 5px;
 }
