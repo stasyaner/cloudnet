@@ -64,17 +64,36 @@ export default (props) => {
 
   let friendsPanelHeader = <div><div>Друзья</div><Badge>42</Badge></div>;
 
-  function onSubmit(event) {
-    event.preventDefault();
-    let textArea = document.getElementById('the-wall-publish-news-textarea');
-    let content = textArea.textContent;
-    if (content) {
-      props.addNews({
-        content,
-        timestamp: new Date().getTime()
-      });
-      textArea.innerText = '';
+  let publishNewsForm = '';
+  if (props.userInfo.id === 'stasyaner') {
+    let onSubmit = (event) => {
+      event.preventDefault();
+      let textArea = document.getElementById('the-wall-publish-news-textarea');
+      let content = textArea.textContent;
+      if (content) {
+        props.addNews({
+          content,
+          timestamp: new Date().getTime()
+        });
+        textArea.innerText = '';
+      }
     }
+
+    publishNewsForm = (
+      <Form id='the-wall-publish-news-form' onSubmit={onSubmit}>
+        <FormGroup controlId='the-wall-publish-news-form-text'>
+          <div id='the-wall-publish-news-textarea'
+            placeholder='Поделиться новостью'
+            contentEditable='true'>
+          </div>
+        </FormGroup>
+
+        <FormGroup>
+          <Button type='submit'>Поделиться</Button>
+        </FormGroup>
+      </Form>
+    );
+
   }
 
   return (
@@ -119,18 +138,7 @@ export default (props) => {
 
       <div id='the-wall-news-feed'>
 
-        <Form id='the-wall-publish-news-form' onSubmit={onSubmit}>
-          <FormGroup controlId='the-wall-publish-news-form-text'>
-            <div id='the-wall-publish-news-textarea'
-              placeholder='Поделиться новостью'
-              contentEditable='true'>
-            </div>
-          </FormGroup>
-
-          <FormGroup>
-            <Button type='submit'>Поделиться</Button>
-          </FormGroup>
-        </Form>
+        {publishNewsForm}
 
         {newsFeedContent}
       </div>
