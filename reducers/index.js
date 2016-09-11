@@ -76,7 +76,7 @@ const rootReducer = (state = getInitialState(), action) => {
       break;
     }
     case USER_LOGIN: {
-      if (state.user === action.user) {
+      if (state.user.id === action.user.id) {
         return state;
       }
       else {

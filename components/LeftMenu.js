@@ -6,7 +6,7 @@ import {LinkContainer} from 'react-router-bootstrap'
 export default (props) => {
   return (
     <ListGroup id='left-menu'>
-      <LinkContainer to='/theWall/stasyaner'>
+      <LinkContainer to={'/theWall/' + props.user.id}>
         <ListGroupItem>Стена</ListGroupItem>
       </LinkContainer>
       <LinkContainer to='/newsFeed'>

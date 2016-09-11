@@ -8,7 +8,13 @@ export default (props) => {
     <div id='the-wall'>
       <TheWallUserInfo userInfo={props.userInfo} />
       <TheWallFriends userFriends={props.userInfo.friends} users={props.users}/>
-      <TheWallNeewsFeed news={props.news} userInfo={props.userInfo} />
+      <TheWallNeewsFeed
+        user={props.user}
+        news={props.news}
+        userInfo={props.userInfo}
+        addNews={props.addNews}
+        removeNews={props.removeNews}
+        like={props.like}/>
     </div>
   );
 }

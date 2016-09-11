@@ -5,6 +5,7 @@ import {Link} from 'react-router';
 import {LinkContainer} from 'react-router-bootstrap'
 
 export default (props) => {
+  let avatar = props.user.avatar? props.user.avatar.thumbnails.small : '';
   return (
     <Navbar>
       <Navbar.Header>
@@ -36,7 +37,7 @@ export default (props) => {
           </NavItem>
           <NavItem id='top-menu-account'>
             <span id='top-menu-name'>Станислав</span>
-            <span id='top-menu-avatar'><img src='https://firebasestorage.googleapis.com/v0/b/cloudnet-7a95b.appspot.com/o/avatars%2Fthumbnails%2Fstasyaner_small.jpg?alt=media&token=8ef928c8-596d-4cb4-9dfd-9926070a34a3'/></span>
+            <span id='top-menu-avatar'><img src={avatar}/></span>
           </NavItem>
           <NavItem id='top-menu-logout' onClick={
             (event) => {

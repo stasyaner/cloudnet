@@ -47,7 +47,7 @@ export default (props) => {
 
   let publishNewsForm = '';
   //TODO: remove hardcode
-  if (props.userInfo.id === 'stasyaner') {
+  if (props.userInfo.id === props.user.id) {
     let onSubmit = (event) => {
       event.preventDefault();
       let textArea = document.getElementById('the-wall-publish-news-textarea');

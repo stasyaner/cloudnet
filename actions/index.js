@@ -1,4 +1,5 @@
 import {browserHistory} from 'react-router';
+import objectAssign from 'object-assign';
 
 export const START_FETCHING = 'START_FETCHING';
 export const ADD_ENTITY = 'ADD_ENTITY';
@@ -46,6 +47,17 @@ function userLoginAction(user) {
   }
 }
 
+function userLogin(user) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    state.firebase.database().ref('users/' + user.uid).on('value',
+      snapshot => {
+        dispatch(userLoginAction(objectAssign({}, user, snapshot.val())));
+    });
+  }
+}
+
 function userLoginErrorAction(error) {
   return {
     type: USER_LOGIN_ERROR,
@@ -70,7 +82,7 @@ export function checkAuthentication() {
         browserHistory.push('/login');
       }
       else if (state.user !== user) {
-        dispatch(userLoginAction(user));
+        dispatch(userLogin(user));
       }
     });
   }
@@ -83,7 +95,7 @@ export function login(email, password) {
 
     getState().firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {
-        dispatch(userLoginAction(user));
+        dispatch(userLogin(user));
         browserHistory.push('/newsFeed');
       })
       .catch(error => {

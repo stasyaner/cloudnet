@@ -12,8 +12,8 @@ class CloudNetContainer extends Component{
   render() {
     return (
       <div>
-        <TopMenu logout={() => {this.props.logout()}}/>
-        <LeftMenu />
+        <TopMenu logout={this.props.logout} user={this.props.user}/>
+        <LeftMenu user={this.props.user}/>
         {this.props.children}
       </div>
     );
