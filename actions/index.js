@@ -81,8 +81,9 @@ export function checkAuthentication() {
         dispatch(authenticationRequiredAction());
         browserHistory.push('/login');
       }
-      else if (state.user !== user) {
+      else if (state.user.uid !== user.uid) {
         dispatch(userLogin(user));
+        dispatch(updateActivity(user.uid));
       }
     });
   }
@@ -230,6 +231,15 @@ export function fetchUserFriends(id) {
 
     userFriendsRef.on('child_removed', friendId => {
       dispatch( removeEntityAction('users', friendId.val()) ) ;
+    });
+  }
+}
+
+export function updateActivity(userId) {
+  return (dispatch, getState) => {
+    const state = getState();
+    state.firebase.database().ref('users/' + userId).update({
+      lastActiveTimestamp: new Date().getTime()
     });
   }
 }

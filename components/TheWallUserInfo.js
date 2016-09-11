@@ -4,15 +4,75 @@ import {Form, FormGroup, FormControl, Button, Panel, Col,
 import {Link} from 'react-router';
 import TheWallFriends from './TheWallFriends';
 
+function getStatusFromTimestamp(lastActiveTimestamp) {
+  if (lastActiveTimestamp) {
+    let wasActiv = new Date() - lastActiveTimestamp;
+    if( wasActiv < (900 * 1000) ) {
+      status = 'Online';
+    }
+    else {
+      status = Math.floor((new Date() - new Date(lastActiveTimestamp)) / (1000 * 60));
+      if(status >= 60) {
+        status *= 1/60;
+        if (status >= 24) {
+          status *= 1/24;
+          if (status >= 7) {
+            let lastActiveTimestampDate = new Date(lastActiveTimestamp);
+              status = lastActiveTimestampDate.toLocaleString('ru', {
+                year: 'numeric',
+                day: 'numeric',
+                month: 'long'
+              });
+          }
+          else {
+            status = Math.floor(status);
+            if (status === 1) {
+              status += ' день назад';
+            }
+            else if(status >=5) {
+               status += ' дней назад';
+            }
+            else {
+              status += ' дня назад';
+            }
+          }
+        }
+        else {
+          status = Math.floor(status);
+          if(status % 10 === 1) {
+            status += ' час назад';
+          }
+          else if((status > 1) && (status <5)) {
+            status += ' часа назад';
+          }
+          else {
+            status += ' часов назад';
+          }
+        }
+      }
+      else {
+        status += ' минут(-ы) назад'
+      }
+    }
+  }
+  else {
+    status = '';
+  }
+
+  return status;
+}
+
 export default (props) => {
 
-  let {birthday, city, displayName, university, signature,
-    status, avatar} = props.userInfo;
+  let {birthday, city, displayName, university, signature, avatar,
+    lastActiveTimestamp} = props.userInfo;
   let age;
+
+  let status = getStatusFromTimestamp(lastActiveTimestamp);
 
   let avatarLink='';
   if (avatar) {
-    avatarLink=avatar.thumbnails.theWall;
+    avatarLink = avatar.thumbnails.theWall;
   }
 
   if(birthday) {

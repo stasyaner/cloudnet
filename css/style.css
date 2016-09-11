@@ -178,13 +178,13 @@ a:hover , a:focus {
 }
 
 #the-wall-profile-info-name {
-  width: 690px;
+  width: 605px;
   font-size: 20px;
   font-weight: 600;
 }
 
 #the-wall-profile-info-status {
-  width: 50px;
+  width: 135px;
   line-height: 28px;
 }
 
