@@ -41,7 +41,7 @@ const mapStateToProps = (state, ownProps) => {
     userId: ownProps.params.userId,
     users: state.entities.users,
     userInfo: state.entities.users[ownProps.params.userId] || {},
-    news: state.entities.news || {}
+    news: state.entities.news
   }
 }
 

@@ -129,6 +129,8 @@ a:hover , a:focus {
 }
 
 #the-wall-friends .the-wall-friend-avatar {
+  width: 25px;
+  height: 25px;
   float: left;
 }
 
