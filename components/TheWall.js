@@ -62,9 +62,8 @@ export default (props) => {
     }
   }
 
-  let friendsPanelHeader = <div><div>Друзья</div><Badge>42</Badge></div>;
-
   let publishNewsForm = '';
+  //TODO: remove hardcode
   if (props.userInfo.id === 'stasyaner') {
     let onSubmit = (event) => {
       event.preventDefault();
@@ -94,6 +93,57 @@ export default (props) => {
       </Form>
     );
 
+  }
+
+  let friendsNumber = 0;
+  let friendsPanelHeader = (
+    <div>
+      <div>Друзья</div>
+      <Badge>{friendsNumber}</Badge>
+    </div>
+  );
+  if (props.userInfo.friends) {
+    friendsPanelHeader = (
+      <div>
+        <div>Друзья</div>
+        <Badge>{Object.keys(props.userInfo.friends).length}</Badge>
+      </div>
+    );
+  }
+
+  let userFriends = [];
+  for(let key in props.users) {
+    if(props.userInfo.friends) {
+
+      let friendsArray = Object.keys(props.userInfo.friends);
+      friendsNumber = friendsArray.length;
+
+      if(friendsArray.indexOf(key) !== -1) {
+        userFriends.push(
+          <Link to={'/theWall/' + key} key={key}>
+            <div className='the-wall-friend'>
+              <div className='the-wall-friend-avatar'>
+                <img width='25' height='25' src={props.users[key].avatar.thumbnails.small}/>
+              </div>
+              <div className='the-wall-friend-name'>
+                {props.users[key].displayName}
+              </div>
+            </div>
+          </Link>
+        );
+      }
+    }
+    else {
+      userFriends[0] = (
+        <Link to={'/theWall/' + key} key={key}>
+          <div className='the-wall-friend'>
+            <div className='the-wall-friend-name'>
+              <Glyphicon glyph='plus'/> Добавить друга
+            </div>
+          </div>
+        </Link>
+      );
+    }
   }
 
   return (
@@ -130,9 +180,7 @@ export default (props) => {
 
       <div id='the-wall-friends'>
         <Panel header={friendsPanelHeader}>
-          <div className='the-wall-friend'>
-            <Link to='/theWall/mizantronix'>Андрей Гулиганов</Link>
-          </div>
+          {userFriends}
         </Panel>
       </div>
 

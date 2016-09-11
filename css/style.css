@@ -124,6 +124,30 @@ a:hover , a:focus {
   margin-top: 15px;
 }
 
+#the-wall-friends .panel-body {
+  padding: 5px 10px 10px 10px;
+}
+
+#the-wall-friends .the-wall-friend-avatar {
+  float: left;
+}
+
+#the-wall-friends .the-wall-friend-avatar img {
+  height: 25px;
+  width: 25px;
+}
+
+#the-wall-friends a {
+  float: left;
+  padding-top: 5px;
+}
+
+#the-wall-friends .the-wall-friend-name {
+  margin-left: 5px;
+  float: left;
+  line-height: 25px;
+}
+
 #the-wall-profile-info, #the-wall-avatar, #the-wall-head {
   float: left;
 }

@@ -145,7 +145,6 @@ export function fetchUserNews(id) {
 
 export function addNews(userId, news) {
   return (dispatch, getState) => {
-console.log('addnews ' + userId);
     const state = getState();
     let userNewsRef = state.firebase.database().ref('users/' + userId + '/news');
 
@@ -217,8 +216,8 @@ export function fetchUserFriends(id) {
       });
     });
 
-    // userNewsRef.on('child_removed', newsId => {
-    //   dispatch( removeEntityAction('news', newsId.val()) ) ;
-    // });
+    userFriendsRef.on('child_removed', friendId => {
+      dispatch( removeEntityAction('users', friendId.val()) ) ;
+    });
   }
 }

@@ -14,7 +14,7 @@ function getInitialState() {
   };
   firebase.initializeApp(firebaseConfig);
 
-  // firebase.storage().ref('avatars/thumbnails/mizantronix_wall.jpg').getDownloadURL()
+  // firebase.storage().ref('avatars/thumbnails/marnature_wall.jpg').getDownloadURL()
   // .then(url => {
   //   console.log(url);
   // });
