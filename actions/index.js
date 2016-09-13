@@ -8,6 +8,7 @@ export const USER_AUTHENTICATING = 'USER_AUTHENTICATING';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR';
 export const AUTHENTICATION_REQUIRED = 'AUTHENTICATION_REQUIRED';
+export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 
 export function startFetchingAction() {
   return {
@@ -47,12 +48,19 @@ function userLoginAction(user) {
   }
 }
 
+export function toggleModalAction() {
+  return {
+    type: TOGGLE_MODAL
+  }
+}
+
 function userLogin(user) {
   return (dispatch, getState) => {
     const state = getState();
 
     state.firebase.database().ref('users/' + user.uid).on('value',
       snapshot => {
+        delete snapshot.val().id;
         dispatch(userLoginAction(objectAssign({}, user, snapshot.val())));
     });
   }

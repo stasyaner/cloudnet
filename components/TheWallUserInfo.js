@@ -3,6 +3,7 @@ import {Form, FormGroup, FormControl, Button, Panel, Col,
   Glyphicon, Collapse, Badge} from 'react-bootstrap';
 import {Link} from 'react-router';
 import TheWallFriends from './TheWallFriends';
+import UploadAvatarModal from './UploadAvatarModal';
 
 function getStatusFromTimestamp(lastActiveTimestamp) {
   if (lastActiveTimestamp) {
@@ -75,6 +76,24 @@ export default (props) => {
     avatarLink = avatar.thumbnails.theWall;
   }
 
+  let changeAvatar = '';
+  let avatarContent= <img src={avatarLink} />;
+  if (props.userInfo.id === props.user.uid) {
+    avatarContent =(
+      <a onClick={props.toggleModal}>
+        <img src={avatarLink} />
+      </a>
+    );
+    changeAvatar = (
+      <UploadAvatarModal
+        newAvatarObjectUrl={props.newAvatarObjectUrl}
+        assignNewAvatarBlob={props.assignNewAvatarBlob}
+        assignNewAvatarObjectUrl={props.assignNewAvatarObjectUrl}
+        showModal={props.showModal}
+        toggleModal={props.toggleModal}/>
+    );
+  }
+
   if(birthday) {
     age = new Date().getFullYear() - new Date(birthday).getFullYear();
     birthday = new Date(birthday).toLocaleString('ru', {
@@ -86,7 +105,8 @@ export default (props) => {
   return (
     <div id='the-wall-head'>
       <div id='the-wall-avatar'>
-        <img src={avatarLink} />
+        {avatarContent}
+        {changeAvatar}
       </div>
 
       <div id='the-wall-profile-info'>
@@ -94,7 +114,6 @@ export default (props) => {
         <div id='the-wall-profile-info-status'>{status}</div>
         <div id='the-wall-profile-info-signature'>{signature}</div>
         <div id='the-wall-profile-info-delimiter'><hr /></div>
-
 
         <Col md={3}>Родился:</Col>
         <Col md={9}>
