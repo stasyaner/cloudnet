@@ -4,8 +4,7 @@ import TheWallFriends from '../components/TheWallFriends';
 import TheWallUserInfo from '../components/TheWallUserInfo';
 import TheWallNeewsFeed from '../components/TheWallNeewsFeed';
 import {fetchUserInfo, fetchUserNews, addNews, removeNews,
-  like, fetchUserFriends, updateActivity, toggleModalAction,
-  assignNewAvatarBlobAction, assignNewAvatarObjectUrlAction} from '../actions';
+  like, fetchUserFriends, updateActivity, toggleModalAction, uploadAvatar} from '../actions';
 
 class TheWallContainer extends Component{
   constructor() {
@@ -35,13 +34,11 @@ class TheWallContainer extends Component{
     return (
       <div id='the-wall'>
         <TheWallUserInfo
-          newAvatarObjectUrl={this.props.newAvatarObjectUrl}
-          assignNewAvatarBlob={this.props.assignNewAvatarBlob}
-          assignNewAvatarObjectUrl={this.props.assignNewAvatarObjectUrl}
           showModal={this.props.showModal}
           toggleModal={this.props.toggleModal}
+          user={this.props.user}
           userInfo={this.props.userInfo}
-          user={this.props.user}/>
+          uploadAvatar={this.props.uploadAvatar}/>
 
         <TheWallFriends
           userFriends={this.props.userInfo.friends}
@@ -66,8 +63,7 @@ const mapStateToProps = (state, ownProps) => {
     users: state.entities.users,
     showModal: state.showModal,
     userInfo: state.entities.users[ownProps.params.userId] || {},
-    news: state.entities.news,
-    newAvatarObjectUrl: state.newAvatarObjectUrl
+    news: state.entities.news
   }
 }
 
@@ -81,10 +77,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     like: (userId, newsId) => dispatch(like(userId, newsId)),
     fetchUserFriends: () => dispatch(fetchUserFriends(ownProps.params.userId)),
     updateActivity: userId => dispatch(updateActivity(userId)),
-    assignNewAvatarBlob: blob => dispatch(assignNewAvatarBlobAction(blob)),
-    assignNewAvatarObjectUrl: objectUrl => dispatch(assignNewAvatarObjectUrlAction(objectUrl))
+    uploadAvatar: (userId, avatar, avatarContext) =>
+      dispatch(uploadAvatar(userId, avatar, avatarContext))
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)
+export default connect(mapStateToProps, mapDispatchToProps)
   (TheWallContainer);

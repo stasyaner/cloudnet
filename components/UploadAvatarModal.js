@@ -3,40 +3,36 @@ import {Form, FormGroup, Button, Modal, Col} from 'react-bootstrap';
 import ReactCrop from 'react-image-crop';
 import ReactCropSASS from 'react-image-crop/lib/ReactCrop.scss';
 
-// scales the image by (float) scale < 1
-// returns a canvas containing the scaled image.
 function downScaleImage(img, scale) {
-    var imgCV = document.createElement('canvas');
+    let imgCV = document.createElement('canvas');
     imgCV.width = img.width;
     imgCV.height = img.height;
-    var imgCtx = imgCV.getContext('2d');
+    let imgCtx = imgCV.getContext('2d');
     imgCtx.drawImage(img, 0, 0);
     return downScaleCanvas(imgCV, scale);
 }
 
-// scales the canvas by (float) scale < 1
-// returns a new canvas containing the scaled image.
 function downScaleCanvas(cv, scale) {
     if (!(scale < 1) || !(scale > 0)) throw ('scale must be a positive number <1 ');
-    var sqScale = scale * scale; // square scale = area of source pixel within target
-    var sw = cv.width; // source image width
-    var sh = cv.height; // source image height
-    var tw = Math.floor(sw * scale); // target image width
-    var th = Math.floor(sh * scale); // target image height
-    var sx = 0, sy = 0, sIndex = 0; // source x,y, index within source array
-    var tx = 0, ty = 0, yIndex = 0, tIndex = 0; // target x,y, x,y index within target array
-    var tX = 0, tY = 0; // rounded tx, ty
-    var w = 0, nw = 0, wx = 0, nwx = 0, wy = 0, nwy = 0; // weight / next weight x / y
+    let sqScale = scale * scale; // square scale = area of source pixel within target
+    let sw = cv.width; // source image width
+    let sh = cv.height; // source image height
+    let tw = Math.floor(sw * scale); // target image width
+    let th = Math.floor(sh * scale); // target image height
+    let sx = 0, sy = 0, sIndex = 0; // source x,y, index within source array
+    let tx = 0, ty = 0, yIndex = 0, tIndex = 0; // target x,y, x,y index within target array
+    let tX = 0, tY = 0; // rounded tx, ty
+    let w = 0, nw = 0, wx = 0, nwx = 0, wy = 0, nwy = 0; // weight / next weight x / y
     // weight is weight of current source point within target.
     // next weight is weight of current source point within next target's point.
-    var crossX = false; // does scaled px cross its current px right border ?
-    var crossY = false; // does scaled px cross its current px bottom border ?
-    var sBuffer = cv.getContext('2d').
+    let crossX = false; // does scaled px cross its current px right border ?
+    let crossY = false; // does scaled px cross its current px bottom border ?
+    let sBuffer = cv.getContext('2d').
     getImageData(0, 0, sw, sh).data; // source buffer 8 bit rgba
-    var tBuffer = new Float32Array(3 * tw * th); // target buffer Float32 rgb
-    var sR = 0, sG = 0,  sB = 0; // source's current point r,g,b
+    let tBuffer = new Float32Array(3 * tw * th); // target buffer Float32 rgb
+    let sR = 0, sG = 0,  sB = 0; // source's current point r,g,b
     /* untested !
-    var sA = 0;  //source alpha  */
+    let sA = 0;  //source alpha  */
 
     for (sy = 0; sy < sh; sy++) {
         ty = sy * scale; // y src position within target
@@ -122,14 +118,14 @@ function downScaleCanvas(cv, scale) {
     } // end for sy
 
     // create result canvas
-    var resCV = document.createElement('canvas');
+    let resCV = document.createElement('canvas');
     resCV.width = tw;
     resCV.height = th;
-    var resCtx = resCV.getContext('2d');
-    var imgRes = resCtx.getImageData(0, 0, tw, th);
-    var tByteBuffer = imgRes.data;
+    let resCtx = resCV.getContext('2d');
+    let imgRes = resCtx.getImageData(0, 0, tw, th);
+    let tByteBuffer = imgRes.data;
     // convert float32 array into a UInt8Clamped Array
-    var pxIndex = 0; //
+    let pxIndex = 0; //
     for (sIndex = 0, tIndex = 0; pxIndex < tw * th; sIndex += 3, tIndex += 4, pxIndex++) {
         tByteBuffer[tIndex] = Math.ceil(tBuffer[sIndex]);
         tByteBuffer[tIndex + 1] = Math.ceil(tBuffer[sIndex + 1]);
@@ -146,18 +142,21 @@ export default class extends Component {
     super(...arguments);
 
     this.state = {
-      newAvatarObjectUrl: null,
-      cropednewAvatarObjectUrl: null,
-      crop: null
+      originalImageObjectUrl: null,
+      croppedImageCanvas: null
     }
   }
 
   handleChange(event) {
-    this.setState({
-      newAvatarObjectUrl: URL.createObjectURL(event.target.files[0])
-    });
-
-    //console.log(event.target.files[0].size / (1024 * 1024));
+    let fileSize = Math.floor(event.target.files[0].size / (1024 * 1024));
+    if (fileSize < 2) {
+      this.setState({
+        originalImageObjectUrl: URL.createObjectURL(event.target.files[0])
+      });
+    }
+    else {
+      event.target.value = null;
+    }
   }
 
   handleComplete(crop, pixelCrop) {
@@ -166,38 +165,61 @@ export default class extends Component {
     canvas.height = pixelCrop.height;
     let context = canvas.getContext('2d');
     let imageObj = new Image();
-    imageObj.src = this.state.newAvatarObjectUrl;
+    imageObj.src = this.state.originalImageObjectUrl;
 
-    // draw cropped image
-    let sourceX = pixelCrop.x;
-    let sourceY = pixelCrop.y;
-    let sourceWidth = pixelCrop.width;
-    let sourceHeight = pixelCrop.height;
-    let destWidth = pixelCrop.width;
-    let destHeight = pixelCrop.height;
+    context.drawImage(imageObj, pixelCrop.x, pixelCrop.y, pixelCrop.width,
+      pixelCrop.height, 0, 0, pixelCrop.width, pixelCrop.height);
 
-    context.drawImage(imageObj, sourceX, sourceY, sourceWidth,
-      sourceHeight, 0, 0, destWidth, destHeight);
+    this.setState({
+      croppedImageCanvas: canvas
+    });
+  }
 
-      let scale = Math.sqrt(200 * (2000/9)) / Math.sqrt(pixelCrop.height * pixelCrop.width);
+  handleClick(event) {
+    event.preventDefault();
 
-      console.log(scale);
+    if (this.state.croppedImageCanvas) {
+      let {croppedImageCanvas} = this.state;
 
-      let lala = downScaleCanvas(canvas, scale);
-      // lala = downScaleCanvas(lala, scale);
+      let wallAvatarScale = Math.sqrt(201 * 222) /
+        Math.sqrt(croppedImageCanvas.height * croppedImageCanvas.width);
+      let smallAvatarScale = Math.sqrt(25 * 27) /
+        Math.sqrt(croppedImageCanvas.height * croppedImageCanvas.width);
 
-      let img = document.getElementById('cropedImg');
-      img.src = lala.toDataURL('image/jpeg', 1);
-    // this.setState({
-    //   cropednewAvatarObjectUrl: canvas.toDataURL('image/jpeg', 0.7)
-    // });
+      downScaleCanvas(croppedImageCanvas, wallAvatarScale).toBlob(blob => {
+        this.props.uploadAvatar(this.props.userId, blob, 'wall');
+      }, 'image/jpeg', 0.9);
+      downScaleCanvas(croppedImageCanvas, smallAvatarScale).toBlob(blob => {
+        this.props.uploadAvatar(this.props.userId, blob, 'small');
+      }, 'image/jpeg', 0.9);
+
+      this.setState({
+        originalImageObjectUrl: null,
+        croppedImageCanvas: null
+      });
+
+      this.props.toggleModal();
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if ((this.state.originalImageObjectUrl === nextState.originalImageObjectUrl)
+      && (this.state.croppedImageCanvas !== nextState.croppedImageCanvas)) {
+      return false;
+    }
+    return true;
   }
 
   render() {
     return (
-      <Modal show={this.props.showModal} onHide={this.props.toggleModal}>
+      <Modal show={this.props.showModal} onHide={() => {
+        this.setState({
+          originalImageObjectUrl: null,
+          croppedImageCanvas: null
+        });
+        this.props.toggleModal();}}>
       <Modal.Header>
-        Загрузите аватар. Максимальный размер - 5мб
+        Загрузите аватар. Максимальный размер - 2мб
       </Modal.Header>
       <Modal.Body>
         <Form horizontal>
@@ -207,18 +229,18 @@ export default class extends Component {
             </Col>
           </FormGroup>
         </Form>
-        {this.state.newAvatarObjectUrl ?
-          <ReactCrop src={this.state.newAvatarObjectUrl} crop={{
+        {this.state.originalImageObjectUrl ?
+          <ReactCrop src={this.state.originalImageObjectUrl} crop={{
             width: 80,
             aspect: 9/10,
             keepSelection: true
           }}
           onComplete={(crop, pixelCrop) => {this.handleComplete(crop, pixelCrop)}}/>
           : null}
-        <img id='cropedImg' width='200' height={2000 / 9} />
-
       </Modal.Body>
-      <Modal.Footer><Button>Сохранить</Button></Modal.Footer>
+      <Modal.Footer>
+        <Button onClick={event => {this.handleClick(event)}}>Сохранить</Button>
+      </Modal.Footer>
       </Modal>
     );
   }

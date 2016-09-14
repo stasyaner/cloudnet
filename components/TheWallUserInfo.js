@@ -1,9 +1,10 @@
-import React, {PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import {Form, FormGroup, FormControl, Button, Panel, Col,
   Glyphicon, Collapse, Badge} from 'react-bootstrap';
 import {Link} from 'react-router';
-import TheWallFriends from './TheWallFriends';
-import UploadAvatarModal from './UploadAvatarModal';
+import TheWallFriends from '../components/TheWallFriends';
+import UploadAvatarModal from '../components/UploadAvatarModal';
 
 function getStatusFromTimestamp(lastActiveTimestamp) {
   if (lastActiveTimestamp) {
@@ -72,8 +73,8 @@ export default (props) => {
   let status = getStatusFromTimestamp(lastActiveTimestamp);
 
   let avatarLink='';
-  if (avatar) {
-    avatarLink = avatar.thumbnails.theWall;
+  if (avatar && avatar.thumbnails && avatar.thumbnails.wall) {
+    avatarLink = avatar.thumbnails.wall;
   }
 
   let changeAvatar = '';
@@ -86,11 +87,10 @@ export default (props) => {
     );
     changeAvatar = (
       <UploadAvatarModal
-        newAvatarObjectUrl={props.newAvatarObjectUrl}
-        assignNewAvatarBlob={props.assignNewAvatarBlob}
-        assignNewAvatarObjectUrl={props.assignNewAvatarObjectUrl}
+        userId={props.user.uid}
         showModal={props.showModal}
-        toggleModal={props.toggleModal}/>
+        toggleModal={props.toggleModal}
+        uploadAvatar={props.uploadAvatar}/>
     );
   }
 

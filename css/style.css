@@ -185,6 +185,7 @@ a:hover , a:focus {
 
 #the-wall-profile-info-status {
   width: 135px;
+  text-align: right;
   line-height: 28px;
 }
 

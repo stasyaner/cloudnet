@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Form, FormGroup, FormControl, Button, Panel, Glyphicon} from 'react-bootstrap';
 import TheWallFriends from './TheWallFriends';
-import TheWallUserInfo from './TheWallUserInfo';
 
 export default (props) => {
 

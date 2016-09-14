@@ -251,3 +251,35 @@ export function updateActivity(userId) {
     });
   }
 }
+
+export function uploadAvatar(userId, avatar, avatarContext) {
+  return (dispatch, getState) => {
+
+    let state = getState();
+    let userAvatarRef = state.firebase.database()
+      .ref('users/' + userId + '/avatar/thumbnails');
+    let avatarThumbnailsRef = state.firebase.storage().ref('avatars/thumbnails');
+
+    let metadata = {
+      contentType: 'image/jpeg',
+    };
+
+    avatarThumbnailsRef.child(userId + '_' + avatarContext +'.jpg')
+      .put(avatar, metadata)
+      .then(snapshot => {
+        userAvatarRef.update({
+          [avatarContext]: snapshot.downloadURL
+        });
+
+        // let user = objectAssign({}, state.user, {
+        //   avatar: objectAssign({}, state.user.avatar, {
+        //     thumbnails: objectAssign({}, state.user.avatar.thumbnails, {
+        //       [avatarContext]: snapshot.downloadURL
+        //     })
+        //   })
+        // });
+        //
+        // dispatch(userLogin(user));
+      });
+  }
+}

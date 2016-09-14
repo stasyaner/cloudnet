@@ -15,7 +15,7 @@ function getInitialState() {
   };
   firebase.initializeApp(firebaseConfig);
 
-  // firebase.storage().ref('avatars/thumbnails/marnature_wall.jpg').getDownloadURL()
+  // firebase.storage().ref('avatars/thumbnails/stasyaner_wall.jpg').getDownloadURL()
   // .then(url => {
   //   console.log(url);
   // });
@@ -34,10 +34,6 @@ function getInitialState() {
       news: {}
     }
   };
-
-  // firebase.database().ref('/').once('value').then(snapshot => {
-  //   initialState.entities = objectAssign({}, initialState.entities, snapshot.val());
-  // }).catch(err => {console.log(err.message);});
 
   return initialState;
 }
