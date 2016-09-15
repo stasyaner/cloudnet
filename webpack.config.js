@@ -1,11 +1,12 @@
 var path = require('path');
 var webpack = require('webpack');
+var config = require('./webpack.config')
 
 module.exports = {
   //devtool: 'cheap-module-eval-source-map',
   entry:  './index',
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'public'),
     filename: 'bundle.js',
     publicPath: '/static/'
   },
