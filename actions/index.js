@@ -4,7 +4,7 @@ import objectAssign from 'object-assign';
 export const START_FETCHING = 'START_FETCHING';
 export const ADD_ENTITY = 'ADD_ENTITY';
 export const REMOVE_ENTITY = 'REMOVE_ENTITY';
-export const USER_AUTHENTICATING = 'USER_AUTHENTICATING';
+export const CHECKING_AUTHENTICATION = 'CHECKING_AUTHENTICATION';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR';
 export const AUTHENTICATION_REQUIRED = 'AUTHENTICATION_REQUIRED';
@@ -35,9 +35,9 @@ function removeEntityAction(entityGroup, id) {
   }
 }
 
-function userAuthenticatingAction() {
+function checkingAuthenticationAction() {
   return {
-    type: USER_AUTHENTICATING
+    type: CHECKING_AUTHENTICATION
   }
 }
 
@@ -82,6 +82,8 @@ function authenticationRequiredAction() {
 export function checkAuthentication() {
   return (dispatch, getState) => {
 
+    dispatch(checkingAuthenticationAction());
+
     const state = getState();
 
     state.firebase.auth().onAuthStateChanged(user => {
@@ -89,7 +91,7 @@ export function checkAuthentication() {
         dispatch(authenticationRequiredAction());
         browserHistory.push('/login');
       }
-      else if (state.user.uid !== user.uid) {
+      else {
         dispatch(userLogin(user));
         dispatch(updateActivity(user.uid));
       }
@@ -99,8 +101,6 @@ export function checkAuthentication() {
 
 export function login(email, password) {
   return (dispatch, getState) => {
-
-    dispatch(userAuthenticatingAction());
 
     getState().firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {

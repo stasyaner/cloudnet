@@ -260,3 +260,9 @@ a:hover , a:focus {
   float: left;
   padding-right: 5px;
 }
+
+.loadingImg {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+}

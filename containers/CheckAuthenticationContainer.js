@@ -12,12 +12,16 @@ class CheckAuthenticationContainer extends Component{
   }
 
   render() {
-    return <div>{this.props.children}</div>;
+    if (this.props.user) {
+      return this.props.children;
+    }
+    return <img className='loadingImg' src='../loading.gif' />;
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    user: state.user
   }
 }
 
@@ -27,5 +31,5 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)
+export default connect(mapStateToProps, mapDispatchToProps)
   (CheckAuthenticationContainer);

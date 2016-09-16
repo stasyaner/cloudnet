@@ -9,12 +9,14 @@ import CheckAuthenticationContainer from '../containers/CheckAuthenticationConta
 {/*<Route path="*" component={NoMatch}/>*/}
 
 export default (
-  <Route component={CheckAuthenticationContainer}>
+  <Route>
     <Route path='login' component={LoginPageContainer}/>
-    <Route path='/' component={CloudNetContainer}>
-      <IndexRoute component={NewsFeedContainer}/>
-      <Route path='newsFeed' component={NewsFeedContainer}/>
-      <Route path='theWall/:userId' component={TheWallContainer}/>
+    <Route component={CheckAuthenticationContainer}>
+      <Route path='/' component={CloudNetContainer}>
+        <IndexRoute component={NewsFeedContainer}/>
+        <Route path='newsFeed' component={NewsFeedContainer}/>
+        <Route path='theWall/:userId' component={TheWallContainer}/>
+      </Route>
     </Route>
   </Route>
 );

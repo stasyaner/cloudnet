@@ -53,7 +53,10 @@ function getStatusFromTimestamp(lastActiveTimestamp) {
         }
       }
       else {
-        status += ' минут(-ы) назад'
+        if ((status % 10 === 1) && (status !== 11)) {
+          status += ' минуту назад';
+        }
+        status += ' минут назад';
       }
     }
   }

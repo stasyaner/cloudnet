@@ -1,4 +1,4 @@
-import {START_FETCHING, ADD_ENTITY, REMOVE_ENTITY, USER_AUTHENTICATING,
+import {START_FETCHING, ADD_ENTITY, REMOVE_ENTITY, CHECKING_AUTHENTICATION,
   USER_LOGIN, USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED,
   TOGGLE_MODAL} from '../actions';
 import objectAssign from 'object-assign';
@@ -24,10 +24,9 @@ function getInitialState() {
   let initialState = {
     firebase,
     fetching: false,
-    authenticating: false,
-    selectedUser: {},
+    checkingAuthentication: true,
     showModal: false,
-    user: firebase.auth().currentUser || {},
+    user: null,
     userLoginError: {},
     entities: {
       users: {},
@@ -73,21 +72,16 @@ const rootReducer = (state = getInitialState(), action) => {
       return objectAssign({}, state, newState);
       break;
     }
-    case USER_AUTHENTICATING: {
+    case CHECKING_AUTHENTICATION: {
       return objectAssign({}, state, {
-        authenticating: true
+        checkingAuthentication: true
       });
       break;
     }
     case USER_LOGIN: {
-      if (state.user.id === action.user.id) {
-        return state;
-      }
-      else {
-        return objectAssign({}, state, {
-          user: action.user
-        });
-      }
+      return objectAssign({}, state, {
+        user: action.user
+      });
       break;
     }
     case USER_LOGIN_ERROR: {
@@ -98,7 +92,8 @@ const rootReducer = (state = getInitialState(), action) => {
     }
     case AUTHENTICATION_REQUIRED: {
       return objectAssign({}, state, {
-        user: ''
+        checkingAuthentication: false,
+        user: null
       });
       break;
     }
