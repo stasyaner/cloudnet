@@ -1,14 +1,22 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import TheWallFriends from '../components/TheWallFriends';
-import TheWallUserInfo from '../components/TheWallUserInfo';
-import TheWallNeewsFeed from '../components/TheWallNeewsFeed';
+import Friends from '../components/Wall/Friends';
+import UserInfo from '../components/Wall/UserInfo';
+import NewsFeed from '../components/Wall/NewsFeed';
 import {fetchUserInfo, fetchUserNews, addNews, removeNews,
-  like, fetchUserFriends, updateActivity, toggleModalAction, uploadAvatar} from '../actions';
+  like, fetchUserFriends, updateActivity, uploadAvatar} from '../actions';
 
-class TheWallContainer extends Component{
+class WallContainer extends Component{
   constructor() {
     super(...arguments);
+
+    this.state = {
+      showUploadAavatarModal: false,
+      showPublishNewsFade: false
+    }
+
+    this.toggleUploadAvatarModal = this.toggleUploadAvatarModal.bind(this);
+    this.togglePublishNewsFade = this.togglePublishNewsFade.bind(this);
   }
 
   componentWillMount() {
@@ -30,30 +38,51 @@ class TheWallContainer extends Component{
     }
   }
 
+  toggleUploadAvatarModal() {
+    this.setState({
+      showUploadAavatarModal: !this.state.showUploadAavatarModal
+    });
+  }
+
+  togglePublishNewsFade() {
+    this.setState({
+      showPublishNewsFade: !this.state.showPublishNewsFade
+    });
+  }
+
   render() {
     return (
       <div id='the-wall'>
-        <TheWallUserInfo
-          showModal={this.props.showModal}
-          toggleModal={this.props.toggleModal}
+        <UserInfo
+          showModal={this.state.showUploadAavatarModal}
+          toggleModal={this.toggleUploadAvatarModal}
           user={this.props.user}
           userInfo={this.props.userInfo}
           uploadAvatar={this.props.uploadAvatar}/>
 
-        <TheWallFriends
+        <Friends
           userFriends={this.props.userInfo.friends}
           users={this.props.users}/>
 
-        <TheWallNeewsFeed
+        <NewsFeed
+          fade={this.state.showPublishNewsFade}
+          toggleFade={this.togglePublishNewsFade}
           user={this.props.user}
+          users={this.props.users}
           news={this.props.news}
           userInfo={this.props.userInfo}
-          addNews={(news) => {this.props.addNews(this.props.user.uid, news)}}
-          removeNews={(newsId) => {this.props.removeNews(this.props.user.uid, newsId)}}
-          like={(newsId) => {this.props.like(this.props.user.uid, newsId)}}/>
+          addNews={this.props.addNews}
+          removeNews={this.props.removeNews}
+          like={this.props.like}/>
       </div>
     );
   }
+}
+
+WallContainer.propTypes = {
+  userId: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
+  users: PropTypes.objectOf(PropTypes.object).isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -61,7 +90,6 @@ const mapStateToProps = (state, ownProps) => {
     user: state.user,
     userId: ownProps.params.userId,
     users: state.entities.users,
-    showModal: state.showModal,
     userInfo: state.entities.users[ownProps.params.userId] || {},
     news: state.entities.news
   }
@@ -69,12 +97,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    toggleModal: () => dispatch(toggleModalAction()),
     fetchUserInfo: () => dispatch(fetchUserInfo(ownProps.params.userId)),
     fetchUserNews: () => dispatch(fetchUserNews(ownProps.params.userId)),
-    addNews: (userId, news) => dispatch(addNews(userId, news)),
-    removeNews: (userId, newsId) => dispatch(removeNews(userId, newsId)),
-    like: (userId, newsId) => dispatch(like(userId, newsId)),
+    addNews: news => dispatch(addNews(news)),
+    removeNews: newsId => dispatch(removeNews(newsId)),
+    like: newsId => dispatch(like(newsId)),
     fetchUserFriends: () => dispatch(fetchUserFriends(ownProps.params.userId)),
     updateActivity: userId => dispatch(updateActivity(userId)),
     uploadAvatar: (userId, avatar, avatarContext) =>
@@ -83,4 +110,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)
-  (TheWallContainer);
+  (WallContainer);

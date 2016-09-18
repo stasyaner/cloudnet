@@ -3,15 +3,6 @@ import {Form, FormGroup, Button, Modal, Col} from 'react-bootstrap';
 import ReactCrop from 'react-image-crop';
 import ReactCropSASS from 'react-image-crop/lib/ReactCrop.scss';
 
-function downScaleImage(img, scale) {
-    let imgCV = document.createElement('canvas');
-    imgCV.width = img.width;
-    imgCV.height = img.height;
-    let imgCtx = imgCV.getContext('2d');
-    imgCtx.drawImage(img, 0, 0);
-    return downScaleCanvas(imgCV, scale);
-}
-
 function downScaleCanvas(cv, scale) {
     if (!(scale < 1) || !(scale > 0)) throw ('scale must be a positive number <1 ');
     let sqScale = scale * scale; // square scale = area of source pixel within target

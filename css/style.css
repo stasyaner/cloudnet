@@ -1,3 +1,7 @@
+body .container {
+  min-width: 1170px;
+}
+
 a {
   outline: 0;
 }
@@ -178,7 +182,7 @@ a:hover , a:focus {
 }
 
 #the-wall-profile-info-name {
-  width: 605px;
+  width: 600px;
   font-size: 20px;
   font-weight: 600;
 }
@@ -204,7 +208,7 @@ a:hover , a:focus {
 }
 
 #the-wall-publish-news-form {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 [contenteditable=true]:empty:before{
@@ -228,10 +232,22 @@ a:hover , a:focus {
   border-radius: 0;
 }
 
-#the-wall-publish-news-form button {
+#the-wall-publish-news-form button[type=submit] {
   position: relative;
+  left: 515px;
+}
+
+#the-wall-publish-news-form button {
+  border: 1px solid #ddd;
   border-radius: 0;
-  left: 633px;
+}
+
+#the-wall-publish-news-form #add-video, #the-wall-publish-news-form #add-file {
+  border-left: none;
+}
+
+#the-wall-publish-news-form .form-group.fade {
+  margin-top: -10px;
 }
 
 .the-wall-remove-news {

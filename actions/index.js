@@ -8,7 +8,6 @@ export const CHECKING_AUTHENTICATION = 'CHECKING_AUTHENTICATION';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR';
 export const AUTHENTICATION_REQUIRED = 'AUTHENTICATION_REQUIRED';
-export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 
 export function startFetchingAction() {
   return {
@@ -45,12 +44,6 @@ function userLoginAction(user) {
   return {
     type: USER_LOGIN,
     user
-  }
-}
-
-export function toggleModalAction() {
-  return {
-    type: TOGGLE_MODAL
   }
 }
 
@@ -164,10 +157,11 @@ export function fetchUserNews(id) {
   }
 }
 
-export function addNews(userId, news) {
+export function addNews(news) {
   return (dispatch, getState) => {
     const state = getState();
-    let userNewsRef = state.firebase.database().ref('users/' + userId + '/news');
+    let userNewsRef = state.firebase.database().ref('users/'
+     + state.user.uid + '/news');
 
     news.author = userId;
     news.id = userNewsRef.push().key;
@@ -181,13 +175,13 @@ export function addNews(userId, news) {
   }
 }
 
-export function removeNews(userId, newsId) {
+export function removeNews(newsId) {
   return (dispatch, getState) => {
 
     const state = getState();
 
     let update = {
-      ['users/' + userId + '/news/' + newsId]: null,
+      ['users/' + state.user.uid + '/news/' + newsId]: null,
       ['news/' + newsId]: null
     };
 
@@ -195,21 +189,21 @@ export function removeNews(userId, newsId) {
   }
 }
 
-export function like(userId, newsId) {
+export function like(newsId) {
   return (dispatch, getState) => {
 
     const state = getState();
     let newsLikesRef = state.firebase.database().ref('news/' + newsId +'/likes');
 
-    newsLikesRef.child(userId).once('value').then(like => {
+    newsLikesRef.child(state.user.uid).once('value').then(like => {
       if (like.val()) {
         newsLikesRef.update({
-          [userId]: null
+          [state.user.uid]: null
         });
       }
       else {
         newsLikesRef.update({
-          [userId]: {
+          [state.user.uid]: {
             timestamp: new Date().getTime()
           }
         });

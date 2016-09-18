@@ -1,6 +1,5 @@
 import {START_FETCHING, ADD_ENTITY, REMOVE_ENTITY, CHECKING_AUTHENTICATION,
-  USER_LOGIN, USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED,
-  TOGGLE_MODAL} from '../actions';
+  USER_LOGIN, USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED} from '../actions';
 import objectAssign from 'object-assign';
 import firebase from 'firebase';
 
@@ -25,7 +24,6 @@ function getInitialState() {
     firebase,
     fetching: false,
     checkingAuthentication: true,
-    showModal: false,
     user: null,
     userLoginError: {},
     entities: {
@@ -39,12 +37,6 @@ function getInitialState() {
 
 const rootReducer = (state = getInitialState(), action) => {
   switch (action.type) {
-    case TOGGLE_MODAL: {
-      return objectAssign({}, state, {
-        showModal: !state.showModal
-      });
-      break;
-    }
     case START_FETCHING: {
       return objectAssign({}, state, {
         fetching: true

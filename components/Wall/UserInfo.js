@@ -3,8 +3,7 @@ import {connect} from 'react-redux';
 import {Form, FormGroup, FormControl, Button, Panel, Col,
   Glyphicon, Collapse, Badge} from 'react-bootstrap';
 import {Link} from 'react-router';
-import TheWallFriends from '../components/TheWallFriends';
-import UploadAvatarModal from '../components/UploadAvatarModal';
+import UploadAvatarModal from './UploadAvatarModal';
 
 function getStatusFromTimestamp(lastActiveTimestamp) {
   if (lastActiveTimestamp) {
@@ -28,11 +27,11 @@ function getStatusFromTimestamp(lastActiveTimestamp) {
           }
           else {
             status = Math.floor(status);
-            if (status === 1) {
-              status += ' день назад';
+            if (status < 2) {
+              status = 'вчера';
             }
             else if(status >=5) {
-               status += ' дней назад';
+              status += ' дней назад';
             }
             else {
               status += ' дня назад';
@@ -42,7 +41,7 @@ function getStatusFromTimestamp(lastActiveTimestamp) {
         else {
           status = Math.floor(status);
           if(status % 10 === 1) {
-            status += ' час назад';
+            status = 'час назад';
           }
           else if((status > 1) && (status <5)) {
             status += ' часа назад';
@@ -98,11 +97,20 @@ export default (props) => {
   }
 
   if(birthday) {
-    age = new Date().getFullYear() - new Date(birthday).getFullYear();
-    birthday = new Date(birthday).toLocaleString('ru', {
-      year: 'numeric',
-      day: 'numeric',
-      month: 'long'});
+    birthday = new Date(birthday);
+    age = new Date().getFullYear() - birthday.getFullYear();
+    if (birthday.toLocaleString) {
+      birthday = birthday.toLocaleString('ru', {
+        year: 'numeric',
+        day: 'numeric',
+        month: 'long'}
+      );
+    }
+    else {
+      birthday = birthday.getDay() + '.' + birthday.getMonth() + '.'
+        + birthday.getFullYear();
+    }
+
   }
 
   return (
