@@ -82,7 +82,9 @@ class WallContainer extends Component{
 WallContainer.propTypes = {
   userId: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
-  users: PropTypes.objectOf(PropTypes.object).isRequired
+  users: PropTypes.objectOf(PropTypes.object).isRequired,
+  userInfo: PropTypes.object.isRequired,
+  news:  PropTypes.objectOf(PropTypes.object).isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {

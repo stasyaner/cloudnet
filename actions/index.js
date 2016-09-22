@@ -11,8 +11,7 @@ export const AUTHENTICATION_REQUIRED = 'AUTHENTICATION_REQUIRED';
 
 export function startFetchingAction() {
   return {
-    type: START_FETCHING,
-    fetching: true
+    type: START_FETCHING
   }
 }
 
@@ -118,42 +117,56 @@ export function logout() {
 
 export function fetchUserInfo(id) {
   return (dispatch, getState) => {
+    if(id) {
+      const state = getState();
 
-    const state = getState();
+      dispatch(startFetchingAction());
 
-    dispatch(startFetchingAction());
-
-    state.firebase.database().ref('users/' + id).on('value',
-      snapshot => {
-        if (!state.entities.users[id]) {
-          dispatch( addEntityAction('users', snapshot.val()) );
-        }
-    });
+      state.firebase.database().ref('users/' + id).on('value',
+        snapshot => {
+        console.log('FUCKKKKKKKKKKk');
+          let userInfo = snapshot.val();
+          if(userInfo) {
+            if (!state.entities.users[id]) {
+              dispatch( addEntityAction('users', snapshot.val()) );
+            }
+          }
+      });
+    }
   }
 }
 
 export function fetchUserNews(id) {
   return (dispatch, getState) => {
+    if(id) {
 
-    dispatch(startFetchingAction());
+      dispatch(startFetchingAction());
 
-    const state = getState();
-    let userNewsRef = state.firebase.database().ref('users/' + id + '/news');//.limitToFirst(1);
-    let newsRef = state.firebase.database().ref('news');
+      const state = getState();
+      let userNewsRef = state.firebase.database().ref('users/' + id + '/news');//.limitToFirst(1);
+      let newsRef = state.firebase.database().ref('news');
 
-    userNewsRef.on('child_added', newsId => {
-      newsRef.child(newsId.val()).on('value', singleNews => {
-        if (singleNews.val()) {
-          if (!state.entities.news.hasOwnProperty(singleNews.val().id)) {
-            dispatch( addEntityAction('news', singleNews.val()) ) ;
-          }
+      userNewsRef.on('child_added', snapshot => {
+        let newsId = snapshot.val();
+        if (newsId) {
+          newsRef.child(newsId).on('value', snapshot => {
+            let singleNews = snapshot.val();
+            if (singleNews) {
+              if (!state.entities.news.hasOwnProperty(singleNews.id)) {
+                dispatch( addEntityAction('news', singleNews) ) ;
+              }
+            }
+          });
         }
       });
-    });
 
-    userNewsRef.on('child_removed', newsId => {
-      dispatch( removeEntityAction('news', newsId.val()) ) ;
-    });
+      userNewsRef.on('child_removed', snapshot => {
+        let newsId = snapshot.val();
+        if(newsId) {
+          dispatch( removeEntityAction('news', newsId) ) ;
+        }
+      });
+    }
   }
 }
 
