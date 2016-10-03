@@ -34,6 +34,8 @@
     "bootstrap": "latest",
     "css-loader": "^0.25.0",
     "es6-promise": "latest",
+    "eslint": "^3.6.1",
+    "eslint-loader": "^1.5.0",
     "expect": "^1.20.2",
     "fetch-ie8": "latest",
     "file-loader": "latest",
@@ -60,5 +62,9 @@
     "url-loader": "latest",
     "webpack": "latest",
     "webpack-dev-server": "^1.15.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.6.1",
+    "eslint-plugin-react": "^6.3.0"
   }
 }

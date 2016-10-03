@@ -18,7 +18,7 @@ module.exports = {
       {
         test: /\.js?$/,
         exclude: /node_modules/,
-        loader: 'babel?cacheDirectory'
+        loaders: ['babel?cacheDirectory']//, 'eslint-loader']
       },
       {
         test: /\.css$/,

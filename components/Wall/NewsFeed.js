@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Form, FormGroup, FormControl, Button, Panel, Glyphicon,
   Fade, OverlayTrigger, Tooltip} from 'react-bootstrap';
 
-  function getNewsFeed(news, authorId, currentUserId, users) {
+  function getNewsFeed(news, authorId, currentUserId, users, like, removeNews) {
     let newsFeed = [];
     if (news) {
       for(let key in news) {
@@ -11,7 +11,9 @@ import {Form, FormGroup, FormControl, Button, Panel, Glyphicon,
           let likesNum;
           likes ? likesNum = likes.length : 0;
 
+          let whoLikes = '';
           let whoLikesContent;
+
           if (likes) {
             whoLikesContent = likes.map(userId => {
               if (users[userId]) {
@@ -25,9 +27,9 @@ import {Form, FormGroup, FormControl, Button, Panel, Glyphicon,
             });
           }
 
-          let whoLikes = (
+          whoLikes = (
             <Tooltip id='whoLikes'>
-              {whoLikesContent.slice(0, 5)}
+              {whoLikesContent ? whoLikesContent.slice(0, 5) : 'нет лайков'}
             </Tooltip>
           );
 
@@ -37,12 +39,12 @@ import {Form, FormGroup, FormControl, Button, Panel, Glyphicon,
                 <a onClick={
                   (event) => {
                     event.preventDefault();
-                    props.like(news[key].id);
+                    like(news[key].id);
                   }
                 }>
                   {likesNum}
                   {' '}
-                  <Glyphicon glyph='heart'/>Лайков
+                  <Glyphicon glyph='heart'/> Лайков
                 </a>
               </OverlayTrigger>
             </div>
@@ -56,7 +58,7 @@ import {Form, FormGroup, FormControl, Button, Panel, Glyphicon,
                   (event) => {
                     event.preventDefault();
                     if (confirm('Вы действительно хотите удалить новость?')) {
-                      props.removeNews(news[key].id);
+                      removeNews(news[key].id);
                     }
                   }
                 }>
@@ -122,7 +124,8 @@ export default props => {
     <div id='the-wall-news-feed'>
       {publishNewsForm}
       {getNewsFeed(props.news,
-        props.userInfo.id, props.user.uid, props.users)}
+        props.userInfo.id, props.user.uid, props.users, props.like,
+        props.removeNews)}
     </div>
   );
 }
