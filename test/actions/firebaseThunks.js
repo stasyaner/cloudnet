@@ -1,88 +1,66 @@
 import configureMockStore from 'redux-mock-store';
-import Firebase from '../utils/firebase';
 import thunk from 'redux-thunk';
-import {fetchUserInfo, fetchUserNews, fetchUserFriends, START_FETCHING,
-  ADD_ENTITY, REMOVE_ENTITY, CHECKING_AUTHENTICATION, USER_LOGIN,
-  USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED} from '../../actions';
 import expect from 'expect';
+import Firebase from '../utils/firebase';
+import { fetchUserWall, fetchUserInfo, fetchUserNews, fetchUserFriends, START_FETCHING,
+  END_FETCHING, ADD_ENTITY } from '../../actions';
 
-const middlewares = [ thunk ]
-const mockStore = configureMockStore(middlewares)
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 describe('firebase fetch actions:', () => {
   let store;
 
-  let initialStateFirebase = {
+  const initialStateFirebase = {
     users: {
       realUserId: {
-        id: 'realUserId'
+        id: 'realUserId',
+      },
+      userWithWall: {
+        id: 'userWithWall',
+        news: {
+          vmvlsfklfm2424asd: 'vmvlsfklfm2424asd',
+        },
+        friends: {
+          skfmsfklgrkgFriend: 'skfmsfklgrkgFriend',
+        },
       },
       userIdWithNews: {
         id: 'userIdWithNews',
         news: {
-          vmvlsfklfm2424asd: 'vmvlsfklfm2424asd'
-        }
-      },
-      userIdAlreadyFetchedNews: {
-        id: 'userIdAlreadyFetchedNews',
-        news: {
-          skmegnwjtrgn234sm: 'skmegnwjtrgn234sm'
-        }
+          vmvlsfklfm2424asd: 'vmvlsfklfm2424asd',
+        },
       },
       userIdWithFriends: {
         id: 'userIdWithFriends',
         friends: {
-          skfmsfklgrkgFriend: 'skfmsfklgrkgFriend'
-        }
+          skfmsfklgrkgFriend: 'skfmsfklgrkgFriend',
+        },
       },
       skfmsfklgrkgFriend: {
-        id: 'skfmsfklgrkgFriend'
+        id: 'skfmsfklgrkgFriend',
       },
-      userIdAlreadyFetchedFriends: {
-        id: 'userIdAlreadyFetchedFriends',
-        friends: {
-          dkfmslkgmsklmfs: 'dkfmslkgmsklmfs'
-        }
-      },
-      dkfmslkgmsklmfs: {
-        id: 'dkfmslkgmsklmfs',
-        description: 'alreadyFetchedFriend'
-      }
     },
     news: {
       vmvlsfklfm2424asd: {
         id: 'vmvlsfklfm2424asd',
-        data: 'newsOne'
+        data: 'newsOne',
       },
-      skmegnwjtrgn234sm: {
-        id: 'skmegnwjtrgn234sm',
-        data: 'alreadyFetchedNews'
-      }
-    }
+    },
   };
 
-  let firebase = new Firebase(initialStateFirebase);
+  const firebase = new Firebase(initialStateFirebase);
 
-  let initialState = {
+  const initialState = {
     firebase,
     fetching: false,
     checkingAuthentication: true,
     user: null,
     userLoginError: {},
     entities: {
-      users: {
-        dkfmslkgmsklmfs: {
-          id: 'dkfmslkgmsklmfs',
-          description: 'alreadyFetchedFriend'
-        }
-      },
-      news: {
-        skmegnwjtrgn234sm: {
-          id: 'skmegnwjtrgn234sm',
-          data: 'alreadyFetchedNews'
-        }
-      }
-    }
+      users: {},
+      news: {},
+    },
   };
 
   beforeEach(() => {
@@ -95,14 +73,13 @@ describe('firebase fetch actions:', () => {
 
   it('fetch a real user info', () => {
     const expectedActions = [
-      { type: START_FETCHING },
-      { type: ADD_ENTITY,
+      {
+        type: ADD_ENTITY,
         entity: {
-          id: 'realUserId'
+          id: 'realUserId',
         },
         entityGroup: 'users',
-        fetching: false
-      }
+      },
     ];
 
     store.dispatch(fetchUserInfo('realUserId'));
@@ -117,36 +94,21 @@ describe('firebase fetch actions:', () => {
   });
 
   it('fetch a not existing user info', () => {
-    const expectedActions = [
-      { type: START_FETCHING }
-    ];
-
     store.dispatch(fetchUserInfo('notExistingUserId'));
 
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-
-  it('fetch already fetched user info', () => {
-    const expectedActions = [
-      { type: START_FETCHING }
-    ];
-
-    store.dispatch(fetchUserInfo('existingUserId'));
-
-    expect(store.getActions()).toEqual(expectedActions);
+    expect(store.getActions()).toEqual([]);
   });
 
   it('fetch a real user news', () => {
     const expectedActions = [
-      { type: START_FETCHING },
-      { type: ADD_ENTITY,
+      {
+        type: ADD_ENTITY,
         entity: {
           id: 'vmvlsfklfm2424asd',
-          data: 'newsOne'
+          data: 'newsOne',
         },
         entityGroup: 'news',
-        fetching: false
-      }
+      },
     ];
 
     store.dispatch(fetchUserNews('userIdWithNews'));
@@ -161,35 +123,20 @@ describe('firebase fetch actions:', () => {
   });
 
   it('fetch a not existing user news', () => {
-    const expectedActions = [
-      { type: START_FETCHING }
-    ];
-
     store.dispatch(fetchUserNews('notExistingUserId'));
 
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-
-  it('fetch already fetched user news', () => {
-    const expectedActions = [
-      { type: START_FETCHING }
-    ];
-
-    store.dispatch(fetchUserNews('userIdAlreadyFetchedNews'));
-
-    expect(store.getActions()).toEqual(expectedActions);
+    expect(store.getActions()).toEqual([]);
   });
 
   it('fetch a real user friends', () => {
     const expectedActions = [
-      { type: START_FETCHING },
-      { type: ADD_ENTITY,
+      {
+        type: ADD_ENTITY,
         entity: {
-          id: 'skfmsfklgrkgFriend'
+          id: 'skfmsfklgrkgFriend',
         },
         entityGroup: 'users',
-        fetching: false
-      }
+      },
     ];
 
     store.dispatch(fetchUserFriends('userIdWithFriends'));
@@ -204,22 +151,51 @@ describe('firebase fetch actions:', () => {
   });
 
   it('fetch a not existing user friends', () => {
-    const expectedActions = [
-      { type: START_FETCHING }
-    ];
-
     store.dispatch(fetchUserFriends('notExistingUserId'));
 
-    expect(store.getActions()).toEqual(expectedActions);
+    expect(store.getActions()).toEqual([]);
   });
 
-  it('fetch already fetched user friends', () => {
+  it('fetch a real user wall', () => {
     const expectedActions = [
-      { type: START_FETCHING }
+      {
+        type: START_FETCHING,
+      },
+      {
+        type: ADD_ENTITY,
+        entity: {
+          id: 'userWithWall',
+          news: {
+            vmvlsfklfm2424asd: 'vmvlsfklfm2424asd',
+          },
+          friends: {
+            skfmsfklgrkgFriend: 'skfmsfklgrkgFriend',
+          },
+        },
+        entityGroup: 'users',
+      },
+      {
+        type: ADD_ENTITY,
+        entity: {
+          id: 'vmvlsfklfm2424asd',
+          data: 'newsOne',
+        },
+        entityGroup: 'news',
+      },
+      {
+        type: ADD_ENTITY,
+        entity: {
+          id: 'skfmsfklgrkgFriend',
+        },
+        entityGroup: 'users',
+      },
+      {
+        type: END_FETCHING,
+      },
     ];
 
-    store.dispatch(fetchUserNews('userIdAlreadyFetchedFriends'));
+    store.dispatch(fetchUserWall('userWithWall'));
 
     expect(store.getActions()).toEqual(expectedActions);
   });
-})
+});

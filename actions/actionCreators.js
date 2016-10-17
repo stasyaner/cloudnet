@@ -2,14 +2,19 @@ import * as actionTypes from './actionTypes';
 
 export function startFetchingAction() {
   return {
-    type: actionTypes.START_FETCHING
-  }
+    type: actionTypes.START_FETCHING,
+  };
+}
+
+export function endFetchingAction() {
+  return {
+    type: actionTypes.END_FETCHING,
+  };
 }
 
 export function addEntityAction(entityGroup, entity) {
   return {
     type: actionTypes.ADD_ENTITY,
-    fetching: false,
     entityGroup,
     entity
   }
@@ -18,7 +23,6 @@ export function addEntityAction(entityGroup, entity) {
 export function removeEntityAction(entityGroup, id) {
   return {
     type: actionTypes.REMOVE_ENTITY,
-    fetching: false,
     entityGroup,
     id
   }

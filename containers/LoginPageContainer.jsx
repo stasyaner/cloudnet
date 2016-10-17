@@ -21,11 +21,14 @@ class CloudNetContainer extends Component{
 
   render() {
     if (this.props.checkingAuthentication) {
-      return <img className='loadingImg' src='../loading.gif' />;
+      return <img className="loadingImg" src="../loading.gif" />;
     }
-    return <LoginPage
-      login={this.props.login}
-      authenticating={this.props.authenticating}/>;
+    return (
+      <LoginPage
+        login={this.props.login}
+        authenticating={this.props.authenticating}
+      />
+    );
   }
 }
 

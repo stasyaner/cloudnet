@@ -18,9 +18,8 @@ describe('action creators:', () => {
   it('should return "add entity" action', () => {
     let expectedAction = {
       type: ADD_ENTITY,
-      fetching: false,
       entityGroup: 'test',
-      entity: 'testEntity'
+      entity: 'testEntity',
     };
 
     expect(addEntityAction('test', 'testEntity')).toEqual(expectedAction);
@@ -29,9 +28,8 @@ describe('action creators:', () => {
   it('should return "remove entity" action', () => {
     let expectedAction = {
       type: REMOVE_ENTITY,
-      fetching: false,
       entityGroup: 'test',
-      id: 'testId'
+      id: 'testId',
     };
 
     expect(removeEntityAction('test', 'testId')).toEqual(expectedAction);

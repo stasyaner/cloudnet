@@ -1,26 +1,19 @@
-import {START_FETCHING, ADD_ENTITY, REMOVE_ENTITY, CHECKING_AUTHENTICATION,
-  USER_LOGIN, USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED} from '../actions';
 import objectAssign from 'object-assign';
 import firebase from 'firebase';
+import { START_FETCHING, END_FETCHING, ADD_ENTITY, REMOVE_ENTITY, CHECKING_AUTHENTICATION,
+  USER_LOGIN, USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED } from '../actions';
 
 function getInitialState() {
-
-  //Initialize Firebase
+  // Initialize Firebase
   const firebaseConfig = {
-    apiKey: "AIzaSyAsq7QMDe6An1YPK2wJrrZeyQJVwJjNsHg",
-    authDomain: "cloudnet-7a95b.firebaseapp.com",
-    databaseURL: "https://cloudnet-7a95b.firebaseio.com",
-    storageBucket: "cloudnet-7a95b.appspot.com",
+    apiKey: 'AIzaSyAsq7QMDe6An1YPK2wJrrZeyQJVwJjNsHg',
+    authDomain: 'cloudnet-7a95b.firebaseapp.com',
+    databaseURL: 'https://cloudnet-7a95b.firebaseio.com',
+    storageBucket: 'cloudnet-7a95b.appspot.com',
   };
   firebase.initializeApp(firebaseConfig);
 
-  // firebase.storage().ref('avatars/thumbnails/stasyaner_wall.jpg').getDownloadURL()
-  // .then(url => {
-  //   console.log(url);
-  // });
-
-
-  let initialState = {
+  const initialState = {
     firebase,
     fetching: false,
     checkingAuthentication: true,
@@ -28,8 +21,8 @@ function getInitialState() {
     userLoginError: {},
     entities: {
       users: {},
-      news: {}
-    }
+      news: {},
+    },
   };
 
   return initialState;
@@ -39,62 +32,58 @@ const rootReducer = (state = getInitialState(), action) => {
   switch (action.type) {
     case START_FETCHING: {
       return objectAssign({}, state, {
-        fetching: true
+        fetching: true,
       });
-      break;
+    }
+    case END_FETCHING: {
+      return objectAssign({}, state, {
+        fetching: false,
+      });
     }
     case ADD_ENTITY: {
-      let value = objectAssign({}, state.entities[action.entityGroup], {
-        [action.entity.id]: action.entity
+      const value = objectAssign({}, state.entities[action.entityGroup], {
+        [action.entity.id]: action.entity,
       });
 
       return objectAssign({}, state, {
-        fetching: false,
         entities: objectAssign({}, state.entities, {
-          [action.entityGroup]: value
-        })
+          [action.entityGroup]: value,
+        }),
       });
-      break;
     }
     case REMOVE_ENTITY: {
-      let newState = objectAssign({}, state, {});
+      const newState = objectAssign({}, state, {});
       delete newState.entities[action.entityGroup][action.id];
       newState.fetching = false;
 
       return objectAssign({}, state, newState);
-      break;
     }
     case CHECKING_AUTHENTICATION: {
       return objectAssign({}, state, {
-        checkingAuthentication: true
+        checkingAuthentication: true,
       });
-      break;
     }
     case USER_LOGIN: {
       return objectAssign({}, state, {
-        user: action.user
+        user: action.user,
       });
-      break;
     }
     case USER_LOGIN_ERROR: {
       return objectAssign({}, state, {
-        userLoginError: action.error
+        userLoginError: action.error,
       });
-      break;
     }
     case AUTHENTICATION_REQUIRED: {
       return objectAssign({}, state, {
         checkingAuthentication: false,
-        user: null
+        user: null,
       });
-      break;
     }
 
     default: {
       return state;
-      break;
     }
   }
-}
+};
 
-export {rootReducer};
+export default rootReducer;
