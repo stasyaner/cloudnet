@@ -1,19 +1,40 @@
 export default class Firebase {
   constructor(initialState = {}) {
     this.data = initialState;
-    this.ref = this.ref.bind(this);
+    this._ref = this._ref.bind(this);
   }
 
   database() {
     return {
-      ref: this.ref
-    }
+      ref: this._ref,
+    };
+  }
+
+  auth() {
+    return {
+      signInWithEmailAndPassword: this._signInWithEmailAndPassword,
+      signOut: this._signOut,
+      onAuthStateChanged: this._onAuthStateChanged,
+    };
+  }
+
+  _signInWithEmailAndPassword(email) {
+    if (email === 'returnErrorTest') return Promise.reject({ error: 'testSignInError' });
+    return Promise.resolve({ uid: 'singedInUser' });
+  }
+
+  _signOut() {
+    return Promise.resolve();
+  }
+
+  _onAuthStateChanged(callback) {
+    callback({ uid: 'userStateChanged' });
   }
 
   _firebaseOn(path) {
     return (event, callback) => {
       let snapshot = null;
-      switch(event) {
+      switch (event) {
         case 'child_added':
           snapshot = this._firebaseSnapshotValue(path)();
           if (snapshot) {
@@ -87,14 +108,13 @@ export default class Firebase {
     }
   }
 
-  ref(path) {
+  _ref(path) {
     return {
-    	child: (childPath) => {
-      	return {
-        	on: this._firebaseOn(path + '/' + childPath)
-        }
-      },
-      on: this._firebaseOn(path)
-    }
+      child: childPath => ({
+        on: this._firebaseOn(path + '/' + childPath),
+      }),
+      on: this._firebaseOn(path),
+      update: () => 'ok',
+    };
   }
 }

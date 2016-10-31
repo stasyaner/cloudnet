@@ -1,7 +1,7 @@
 import objectAssign from 'object-assign';
 import firebase from 'firebase';
-import { START_FETCHING, END_FETCHING, ADD_ENTITY, REMOVE_ENTITY, CHECKING_AUTHENTICATION,
-  USER_LOGIN, USER_LOGIN_ERROR, AUTHENTICATION_REQUIRED } from '../actions';
+import { START_FETCHING, END_FETCHING, ADD_ENTITY, REMOVE_ENTITY, USER_LOGIN, USER_LOGIN_ERROR,
+  USER_LOGOUT_ERROR, AUTHENTICATION_REQUIRED } from '../actions';
 
 function getInitialState() {
   // Initialize Firebase
@@ -16,9 +16,9 @@ function getInitialState() {
   const initialState = {
     firebase,
     fetching: false,
-    checkingAuthentication: true,
     user: null,
-    userLoginError: {},
+    userLoginError: null,
+    userLogoutError: null,
     entities: {
       users: {},
       news: {},
@@ -54,14 +54,8 @@ const rootReducer = (state = getInitialState(), action) => {
     case REMOVE_ENTITY: {
       const newState = objectAssign({}, state, {});
       delete newState.entities[action.entityGroup][action.id];
-      newState.fetching = false;
 
       return objectAssign({}, state, newState);
-    }
-    case CHECKING_AUTHENTICATION: {
-      return objectAssign({}, state, {
-        checkingAuthentication: true,
-      });
     }
     case USER_LOGIN: {
       return objectAssign({}, state, {
@@ -73,9 +67,13 @@ const rootReducer = (state = getInitialState(), action) => {
         userLoginError: action.error,
       });
     }
+    case USER_LOGOUT_ERROR: {
+      return objectAssign({}, state, {
+        userLogoutError: action.error,
+      });
+    }
     case AUTHENTICATION_REQUIRED: {
       return objectAssign({}, state, {
-        checkingAuthentication: false,
         user: null,
       });
     }

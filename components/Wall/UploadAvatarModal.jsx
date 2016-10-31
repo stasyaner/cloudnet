@@ -3,6 +3,8 @@ import { Form, FormGroup, Button, Modal, Col } from 'react-bootstrap';
 import ReactCrop from 'react-image-crop';
 import ReactCropSASS from 'react-image-crop/lib/ReactCrop.scss';
 
+// TODO: rebuild this with cropper.js
+
 function downScaleCanvas(cv, scale) {
   if (!(scale < 1) || !(scale > 0)) throw ('scale must be a positive number <1 ');
   const sqScale = scale * scale; // square scale = area of source pixel within target
@@ -135,6 +137,9 @@ class UploadAvatarModal extends Component {
       originalImageObjectUrl: null,
       croppedImageCanvas: null,
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleComplete = this.handleComplete.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -218,7 +223,7 @@ class UploadAvatarModal extends Component {
           <Form horizontal>
             <FormGroup>
               <Col md={12}>
-                <input type="file" onChange={(event) => { this.handleChange(event); }} />
+                <input type="file" onChange={this.handleChange} />
               </Col>
             </FormGroup>
           </Form>
@@ -229,7 +234,7 @@ class UploadAvatarModal extends Component {
                 aspect: 9 / 10,
                 keepSelection: true,
               }}
-              onComplete={(crop, pixelCrop) => { this.handleComplete(crop, pixelCrop); }}
+              onComplete={this.handleComplete}
             />
             : null}
         </Modal.Body>

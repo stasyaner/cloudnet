@@ -159,11 +159,11 @@ a:hover , a:focus {
 }
 
 #the-wall-avatar {
+  min-width: 215px;
   padding-right: 15px;
 }
 
 #the-wall-avatar img {
-  width: 200px;
   min-height: 200px;
 }
 
