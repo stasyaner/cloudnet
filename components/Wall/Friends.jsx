@@ -25,12 +25,22 @@ const Friends = (props) => {
         }
       });
     });
-  } else {
+  } else if (props.currentUserUid === props.userInfoId) {
     userFriends[0] = (
       <Link to="addFriend" key="addFriendLink">
         <div className="the-wall-friend">
           <div className="the-wall-friend-name">
             <Glyphicon glyph="plus" /> Добавить друга
+          </div>
+        </div>
+      </Link>
+    );
+  } else {
+    userFriends[0] = (
+      <Link to="addToFriend" key="addFriendLink">
+        <div className="the-wall-friend">
+          <div className="the-wall-friend-name">
+            Вы друзья?
           </div>
         </div>
       </Link>
@@ -56,6 +66,8 @@ const Friends = (props) => {
 Friends.propTypes = {
   userFriends: PropTypes.objectOf(PropTypes.string).isRequired,
   users: PropTypes.objectOf(PropTypes.object).isRequired,
+  currentUserUid: PropTypes.string.isRequired,
+  userInfoId: PropTypes.string.isRequired,
 };
 
 export default Friends;

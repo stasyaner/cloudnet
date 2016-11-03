@@ -27,7 +27,8 @@ class WallContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.userId !== nextProps.userId) {
-      this.props.fetchUserWall();
+      nextProps.fetchUserWall();
+
       // here it's not principal which props instance to use
       this.props.updateActivity(this.props.currentUserUid);
     }
@@ -60,6 +61,8 @@ class WallContainer extends Component {
         />
 
         <Friends
+          currentUserUid={this.props.currentUserUid}
+          userInfoId={userInfoId}
           userFriends={userFriends}
           users={this.props.users}
         />
