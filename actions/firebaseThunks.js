@@ -141,14 +141,14 @@ export function fetchUserFriends(id) {
       });
     });
 
-    userFriendsRef.on('child_removed', (friendIdSnapshot) => {
-      state = getState();
-      const friendId = friendIdSnapshot.val();
-
-      if (friendId && state.entities.users[friendId]) {
-        dispatch(actionCreators.removeEntityAction('users', friendId));
-      }
-    });
+    // userFriendsRef.on('child_removed', (friendIdSnapshot) => {
+    //   state = getState();
+    //   const friendId = friendIdSnapshot.val();
+    //
+    //   if (friendId && state.entities.users[friendId]) {
+    //     dispatch(actionCreators.removeEntityAction('users', friendId));
+    //   }
+    // });
   };
 }
 
@@ -248,15 +248,16 @@ export function uploadAvatar(avatar, avatarContext) {
   };
 }
 
+// TODO: this is not working
 export function searchUser(displayName) {
   return (dispatch, getState) => {
     const state = getState();
 
+    dispatch(actionCreators.clearEntityGroupAction('userSearchResult'));
+
     if (!displayName) return;
 
     const searchedUsersRef = state.firebase.database().ref('users').orderByChild('displayName').startAt(displayName);// .limitToFirst(1);
-
-    dispatch(actionCreators.clearEntityGroupAction('userSearchResult'));
 
     searchedUsersRef.on('child_added', (userInfoSnapshot) => {
       const userInfo = userInfoSnapshot.val();

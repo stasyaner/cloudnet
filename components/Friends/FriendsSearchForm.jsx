@@ -10,7 +10,7 @@ const FriendsSearchForm = props => (
         contentEditable="true"
         onInput={(event) => {
           const user = event.target.textContent;
-          if (user) props.searchUser(user);
+          props.searchUser(user);
         }}
       />
     </FormGroup>
