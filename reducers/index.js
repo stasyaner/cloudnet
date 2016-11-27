@@ -1,7 +1,7 @@
 import objectAssign from 'object-assign';
 import firebase from 'firebase';
 import { START_FETCHING, END_FETCHING, ADD_ENTITY, REMOVE_ENTITY, USER_LOGIN, USER_LOGIN_ERROR,
-  USER_LOGOUT_ERROR, AUTHENTICATION_REQUIRED } from '../actions';
+  USER_LOGOUT_ERROR, AUTHENTICATION_REQUIRED, CLEAR_ENTITY_GROUP } from '../actions';
 
 function getInitialState() {
   // Initialize Firebase
@@ -54,6 +54,12 @@ const rootReducer = (state = getInitialState(), action) => {
     case REMOVE_ENTITY: {
       const newState = objectAssign({}, state, {});
       delete newState.entities[action.entityGroup][action.id];
+
+      return objectAssign({}, state, newState);
+    }
+    case CLEAR_ENTITY_GROUP: {
+      const newState = objectAssign({}, state, {});
+      delete newState.entities[action.entityGroup];
 
       return objectAssign({}, state, newState);
     }

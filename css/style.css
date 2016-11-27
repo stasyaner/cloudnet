@@ -154,7 +154,7 @@ a:hover , a:focus {
   line-height: 25px;
 }
 
-#the-wall-profile-info, #the-wall-avatar, #the-wall-head {
+#the-wall-profile-info, #the-wall-avatar, #the-wall-head, .friend-avatar, .friend-right-pane {
   float: left;
 }
 
@@ -177,8 +177,21 @@ a:hover , a:focus {
   float: left;
 }
 
-#the-wall-profile-info .col-md-3 {
-  padding-left: 0px;
+#the-wall-profile-info .col-md-3, #the-wall-profile-info .col-md-12 {
+  padding: 0;
+}
+
+.btn {
+  border-radius: 0;
+}
+
+.btn.toggle-friend {
+  opacity: 0.1;
+  margin-top: 10px;
+}
+
+.btn.toggle-friend:hover {
+  opacity: 1;
 }
 
 #the-wall-profile-info-name {
@@ -215,11 +228,15 @@ a:hover , a:focus {
   content: attr(placeholder);
 }
 
-#the-wall-publish-news-textarea:empty {
+#the-wall-publish-news-textarea:empty, #friend-search-textarea:empty {
   color: #999;
 }
 
-#the-wall-publish-news-textarea {
+#friends-page {
+  width: 955px;
+}
+
+#the-wall-publish-news-textarea, #friend-search-textarea {
   width: 100%;
   padding: 15px;
   outline: none;
@@ -275,6 +292,38 @@ a:hover , a:focus {
 #the-wall-friends .panel-heading div div {
   float: left;
   padding-right: 5px;
+}
+
+#friends-page {
+  float: left;
+  margin-left: 15px;
+}
+
+.friend-item {
+  float: left;
+  clear: both;
+  margin-bottom: 15px;
+}
+
+.friend-avatar {
+  min-width: 115px;
+  padding-right: 15px;
+}
+
+.friend-name {
+  font-size: 20px;
+}
+
+.friend-dialog {
+}
+
+.friend-remove a {
+  color: #cc0000;
+  opacity: 0.3;
+}
+
+.friend-remove a:hover {
+  opacity: 1;
 }
 
 .loadingImg {

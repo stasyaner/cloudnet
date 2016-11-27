@@ -3,31 +3,31 @@ import { Panel, Glyphicon, Badge } from 'react-bootstrap';
 import { Link } from 'react-router';
 
 const Friends = (props) => {
-  const userFriends = [];
-  const friendsNumber = Object.keys(props.userFriends).length;
+  const userFriendsJSX = [];
+  const { users, userFriends } = props;
+  const userFriendIdList = Object.keys(userFriends);
+  const friendsNumber = userFriendIdList.length;
 
-  if (friendsNumber) {
-    Object.keys(props.users).forEach((userKey) => {
-      Object.keys(props.userFriends).forEach((friendKey) => {
-        if (props.userFriends[friendKey] === userKey) {
-          userFriends.push(
-            <Link to={`/theWall/${userKey}`} key={userKey}>
-              <div className="the-wall-friend">
-                <div className="the-wall-friend-avatar">
-                  <img alt="avatar" src={props.users[userKey].avatar.small} />
-                </div>
-                <div className="the-wall-friend-name">
-                  {props.users[userKey].displayName}
-                </div>
+  if (friendsNumber > 0) {
+    for (let i = 0; i < friendsNumber; i += 1) {
+      if (users[userFriendIdList[i]]) {
+        userFriendsJSX.push(
+          <Link to={`/theWall/${userFriendIdList[i]}`} key={userFriendIdList[i]}>
+            <div className="the-wall-friend">
+              <div className="the-wall-friend-avatar">
+                <img alt="avatar" src={users[userFriendIdList[i]].avatar.small} />
               </div>
-            </Link>
-          );
-        }
-      });
-    });
+              <div className="the-wall-friend-name">
+                {users[userFriendIdList[i]].displayName}
+              </div>
+            </div>
+          </Link>
+        );
+      }
+    }
   } else if (props.currentUserUid === props.userInfoId) {
-    userFriends[0] = (
-      <Link to="addFriend" key="addFriendLink">
+    userFriendsJSX[0] = (
+      <Link to="/friends" key="addFriendLink">
         <div className="the-wall-friend">
           <div className="the-wall-friend-name">
             <Glyphicon glyph="plus" /> Добавить друга
@@ -36,14 +36,12 @@ const Friends = (props) => {
       </Link>
     );
   } else {
-    userFriends[0] = (
-      <Link to="addToFriend" key="addFriendLink">
-        <div className="the-wall-friend">
-          <div className="the-wall-friend-name">
-            Вы друзья?
-          </div>
+    userFriendsJSX[0] = (
+      <div className="the-wall-friend" key={'no-friends'}>
+        <div className="the-wall-friend-name">
+          Пользователь пока никого не добавил
         </div>
-      </Link>
+      </div>
     );
   }
 
@@ -57,15 +55,15 @@ const Friends = (props) => {
   return (
     <div id="the-wall-friends">
       <Panel header={friendsPanelHeader}>
-        {userFriends}
+        {userFriendsJSX}
       </Panel>
     </div>
   );
 };
 
 Friends.propTypes = {
-  userFriends: PropTypes.objectOf(PropTypes.string).isRequired,
   users: PropTypes.objectOf(PropTypes.object).isRequired,
+  userFriends: PropTypes.objectOf(PropTypes.string),
   currentUserUid: PropTypes.string.isRequired,
   userInfoId: PropTypes.string.isRequired,
 };

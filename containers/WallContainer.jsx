@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import Friends from '../components/Wall/Friends';
 import UserInfo from '../components/Wall/UserInfo';
 import NewsFeed from '../components/Wall/NewsFeed';
-import { fetchUserWall, addNews, removeNews, like, updateActivity, uploadAvatar } from '../actions';
+import { fetchUserWall, addNews, removeNews, like, updateActivity, uploadAvatar,
+  toggleFriend } from '../actions';
 
 class WallContainer extends Component {
   constructor(...restParams) {
@@ -47,8 +48,8 @@ class WallContainer extends Component {
   }
 
   render() {
-    const userFriends = this.props.userInfo.friends ? this.props.userInfo.friends : {};
-    const userInfoId = this.props.userInfo.id ? this.props.userInfo.id : '';
+    const { friends = {} } = this.props.userInfo;
+    const { id = '' } = this.props.userInfo;
 
     return (
       <div id="the-wall">
@@ -56,14 +57,16 @@ class WallContainer extends Component {
           showModal={this.state.showUploadAavatarModal}
           toggleModal={this.toggleUploadAvatarModal}
           currentUserUid={this.props.currentUserUid}
+          isFriend={this.props.isFriend}
           userInfo={this.props.userInfo}
           uploadAvatar={this.props.uploadAvatar}
+          toggleFriend={this.props.toggleFriend}
         />
 
         <Friends
           currentUserUid={this.props.currentUserUid}
-          userInfoId={userInfoId}
-          userFriends={userFriends}
+          userInfoId={id}
+          userFriends={friends}
           users={this.props.users}
         />
 
@@ -73,7 +76,7 @@ class WallContainer extends Component {
           currentUserUid={this.props.currentUserUid}
           users={this.props.users}
           news={this.props.news}
-          userInfoId={userInfoId}
+          userInfoId={id}
           addNews={this.props.addNews}
           removeNews={this.props.removeNews}
           like={this.props.like}
@@ -101,12 +104,15 @@ WallContainer.propTypes = {
   like: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
   uploadAvatar: PropTypes.func.isRequired,
+  toggleFriend: PropTypes.func.isRequired,
+  isFriend: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => (
   {
     currentUserUid: state.user.uid,
     userId: ownProps.params.userId,
+    isFriend: {}.hasOwnProperty.call(state.user.friends, ownProps.params.userId),
     users: state.entities.users,
     userInfo: state.entities.users[ownProps.params.userId] || {},
     news: state.entities.news,
@@ -121,6 +127,7 @@ const mapDispatchToProps = (dispatch, ownProps) => (
     like: newsId => dispatch(like(newsId)),
     updateActivity: userId => dispatch(updateActivity(userId)),
     uploadAvatar: (avatar, avatarContext) => dispatch(uploadAvatar(avatar, avatarContext)),
+    toggleFriend: () => dispatch(toggleFriend(ownProps.params.userId)),
   }
 );
 

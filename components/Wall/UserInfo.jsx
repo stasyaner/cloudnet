@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Col } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 import UploadAvatarModal from './UploadAvatarModal';
 
 function getStatusFromTimestamp(lastActiveTimestamp) {
@@ -57,23 +57,22 @@ function getStatusFromTimestamp(lastActiveTimestamp) {
 
 const UserInfo = (props) => {
   let { birthday } = props.userInfo;
-  const { city, displayName, university, signature, avatar,
-    lastActiveTimestamp } = props.userInfo;
-  let age;
+  const { city = '-', displayName, university = '-', signature, avatar, lastActiveTimestamp } = props.userInfo;
 
   const status = getStatusFromTimestamp(lastActiveTimestamp);
 
-  let avatarLink = '';
-  if (avatar && avatar.wall) {
-    avatarLink = avatar.wall;
+  let avatarURL = '';
+  if (avatar && avatar.big) {
+    avatarURL = avatar.big;
   }
 
   let changeAvatar = '';
-  let avatarContent = <img alt="avatar" src={avatarLink} />;
+  let avatarContent = <img alt="avatar" src={avatarURL} />;
+  let toggleFriendButton = '';
   if (props.userInfo.id === props.currentUserUid) {
     avatarContent = (
       <a onClick={props.toggleModal}>
-        <img alt="avatar" src={avatarLink} />
+        <img alt="avatar" src={avatarURL} />
       </a>
     );
     changeAvatar = (
@@ -83,8 +82,25 @@ const UserInfo = (props) => {
         uploadAvatar={props.uploadAvatar}
       />
     );
+  } else {
+    const toggleFriendButtonBsStyle = props.isFriend ? 'danger' : 'primary';
+    const toggleFriendButtonContent = props.isFriend ? 'Удалить из друзей' : 'Добавить в друзья';
+    toggleFriendButton = (
+      <Col md={12}>
+        <Button
+          className="toggle-friend"
+          bsStyle={toggleFriendButtonBsStyle}
+          bsSize="xsmall"
+          block
+          onClick={() => { props.toggleFriend(); }}
+        >
+          {toggleFriendButtonContent}
+        </Button>
+      </Col>
+    );
   }
 
+  let age;
   if (birthday) {
     birthday = new Date(birthday);
     age = new Date().getFullYear() - birthday.getFullYear();
@@ -127,6 +143,8 @@ const UserInfo = (props) => {
         <Col md={9}>
           <div id="the-wall-profile-info-univercity">{university}</div>
         </Col>
+
+        {toggleFriendButton}
       </div>
     </div>
   );
@@ -144,6 +162,8 @@ UserInfo.propTypes = {
   showModal: PropTypes.bool.isRequired,
   uploadAvatar: PropTypes.func.isRequired,
   toggleModal: PropTypes.func.isRequired,
+  toggleFriend: PropTypes.func.isRequired,
+  isFriend: PropTypes.bool.isRequired,
 };
 
 export default UserInfo;

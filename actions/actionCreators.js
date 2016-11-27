@@ -28,6 +28,13 @@ export function removeEntityAction(entityGroup, id) {
   };
 }
 
+export function clearEntityGroupAction(entityGroup) {
+  return {
+    type: actionTypes.CLEAR_ENTITY_GROUP,
+    entityGroup,
+  };
+}
+
 export function checkingAuthenticationAction() {
   return {
     type: actionTypes.CHECKING_AUTHENTICATION,

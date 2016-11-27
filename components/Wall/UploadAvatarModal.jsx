@@ -185,11 +185,16 @@ class UploadAvatarModal extends Component {
 
       const wallAvatarScale = Math.sqrt(201 * 222) /
         Math.sqrt(croppedImageCanvas.height * croppedImageCanvas.width);
+      const middleAvatarScale = Math.sqrt(100 * 111) /
+        Math.sqrt(croppedImageCanvas.height * croppedImageCanvas.width);
       const smallAvatarScale = Math.sqrt(25 * 27) /
         Math.sqrt(croppedImageCanvas.height * croppedImageCanvas.width);
 
       downScaleCanvas(croppedImageCanvas, wallAvatarScale).toBlob((blob) => {
-        this.props.uploadAvatar(blob, 'wall');
+        this.props.uploadAvatar(blob, 'big');
+      }, 'image/jpeg', 0.9);
+      downScaleCanvas(croppedImageCanvas, middleAvatarScale).toBlob((blob) => {
+        this.props.uploadAvatar(blob, 'middle');
       }, 'image/jpeg', 0.9);
       downScaleCanvas(croppedImageCanvas, smallAvatarScale).toBlob((blob) => {
         this.props.uploadAvatar(blob, 'small');

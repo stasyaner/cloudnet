@@ -10,7 +10,9 @@ const LeftMenu = props => (
     <LinkContainer to="/newsFeed">
       <ListGroupItem>Новости</ListGroupItem>
     </LinkContainer>
-    <ListGroupItem>Друзья</ListGroupItem>
+    <LinkContainer to="/friends">
+      <ListGroupItem>Друзья</ListGroupItem>
+    </LinkContainer>
     <ListGroupItem>Фотографии</ListGroupItem>
     <ListGroupItem>Аудиозаписи</ListGroupItem>
     <ListGroupItem >Видеозаписи</ListGroupItem>

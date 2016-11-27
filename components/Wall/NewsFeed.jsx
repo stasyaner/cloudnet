@@ -64,7 +64,7 @@ function getNewsFeed(news, authorId, currentUserId, users, like, removeNews) {
                 onClick={
                   (event) => {
                     event.preventDefault();
-                    if (confirm("Вы действительно хотите удалить новость?")) {
+                    if (confirm('Вы действительно хотите удалить новость?')) {
                       removeNews(news[key].id);
                     }
                   }

@@ -125,6 +125,9 @@ export function fetchUserFriends(id) {
     if (!id) return;
 
     let state = getState();
+
+    if (id === 'self') id = state.user.uid;
+
     const userFriendsRef = state.firebase.database().ref(`users/${id}/friends`);
     const usersRef = state.firebase.database().ref('users');
 
@@ -176,8 +179,8 @@ export function addNews(news) {
       id: userNewsRef.push().key,
     });
     const update = {
-      [`users/ ${userId}/news/${updatedNews.id}`]: updatedNews.id,
-      [`news/ ${updatedNews.id}`]: updatedNews,
+      [`users/${userId}/news/${updatedNews.id}`]: updatedNews.id,
+      [`news/${updatedNews.id}`]: updatedNews,
     };
 
     state.firebase.database().ref().update(update);
@@ -190,8 +193,8 @@ export function removeNews(newsId) {
 
     const state = getState();
     const update = {
-      [`users/ ${state.user.uid}/news/${newsId}`]: null,
-      [`news/ ${newsId}`]: null,
+      [`users/${state.user.uid}/news/${newsId}`]: null,
+      [`news/${newsId}`]: null,
     };
 
     state.firebase.database().ref().update(update);
@@ -242,5 +245,49 @@ export function uploadAvatar(avatar, avatarContext) {
           [avatarContext]: snapshot.downloadURL,
         });
       });
+  };
+}
+
+export function searchUser(displayName) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (!displayName) return;
+
+    const searchedUsersRef = state.firebase.database().ref('users').orderByChild('displayName').startAt(displayName);// .limitToFirst(1);
+
+    dispatch(actionCreators.clearEntityGroupAction('userSearchResult'));
+
+    searchedUsersRef.on('child_added', (userInfoSnapshot) => {
+      const userInfo = userInfoSnapshot.val();
+
+      if (userInfo) dispatch(actionCreators.addEntityAction('userSearchResult', userInfo));
+    });
+  };
+}
+
+export function toggleFriend(userId) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (!userId) return;
+
+    const currentUserUid = state.user.uid;
+    const currentUserFriendsRef = state.firebase.database().ref(`users/${currentUserUid}/friends`);
+    const friendCheckRef = state.firebase.database().ref(`users/${currentUserUid}/friends/${userId}`);
+
+    friendCheckRef.once('value').then((friendIdSnapshot) => {
+      const friendId = friendIdSnapshot.val();
+
+      if (friendId) {
+        currentUserFriendsRef.update({
+          [userId]: null,
+        });
+      } else {
+        currentUserFriendsRef.update({
+          [userId]: userId,
+        });
+      }
+    });
   };
 }
