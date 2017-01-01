@@ -38,11 +38,10 @@ export default class Firebase {
         case 'child_added':
           snapshot = this._firebaseSnapshotValue(path)();
           if (snapshot) {
-            Object.keys(snapshot).map((item) => {
-              return {
-                val: () => item
-              }
-            }).forEach(callback);
+            Object.keys(snapshot).map((item) => ({
+              val: () => item,
+              key: item,
+            })).forEach(callback);
           }
           else {
             callback({

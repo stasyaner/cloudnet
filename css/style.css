@@ -35,7 +35,7 @@ a:hover , a:focus {
 }
 
 #top-menu-logout {
-  left: 280px;
+  left: 320px;
 }
 
 .container#login-page {
@@ -144,6 +144,7 @@ a:hover , a:focus {
 }
 
 #the-wall-friends a {
+  width: 100%;
   float: left;
   padding-top: 5px;
 }

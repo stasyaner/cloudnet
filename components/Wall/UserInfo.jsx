@@ -84,7 +84,7 @@ const UserInfo = (props) => {
     );
   } else {
     const toggleFriendButtonBsStyle = props.isFriend ? 'danger' : 'primary';
-    const toggleFriendButtonContent = props.isFriend ? 'Удалить из друзей' : 'Добавить в друзья';
+    const toggleFriendButtonContent = props.isFriend ? 'Удалить из друзей' : 'Подать заявку в друзья';
     toggleFriendButton = (
       <Col md={12}>
         <Button

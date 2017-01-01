@@ -21,7 +21,7 @@ const Friends = (props) => {
                 {users[userFriendIdList[i]].displayName}
               </div>
             </div>
-          </Link>
+          </Link>,
         );
       }
     }
@@ -63,7 +63,7 @@ const Friends = (props) => {
 
 Friends.propTypes = {
   users: PropTypes.objectOf(PropTypes.object).isRequired,
-  userFriends: PropTypes.objectOf(PropTypes.string),
+  userFriends: PropTypes.objectOf(PropTypes.shape({ confirmed: PropTypes.bool })),
   currentUserUid: PropTypes.string.isRequired,
   userInfoId: PropTypes.string.isRequired,
 };

@@ -124,7 +124,7 @@ export function fetchUserFriends(id) {
   return (dispatch, getState) => {
     if (!id) return;
 
-    let state = getState();
+    const state = getState();
 
     if (id === 'self') id = state.user.uid;
 
@@ -132,7 +132,7 @@ export function fetchUserFriends(id) {
     const usersRef = state.firebase.database().ref('users');
 
     userFriendsRef.on('child_added', (friendIdSnapshot) => {
-      usersRef.child(friendIdSnapshot.val()).on('value', (singleFriendSnapshot) => {
+      usersRef.child(friendIdSnapshot.key).on('value', (singleFriendSnapshot) => {
         const singleFriend = singleFriendSnapshot.val();
 
         if (singleFriend) {
@@ -248,7 +248,7 @@ export function uploadAvatar(avatar, avatarContext) {
   };
 }
 
-// TODO: this is not working
+// TODO: this may be not working
 export function searchUser(displayName) {
   return (dispatch, getState) => {
     const state = getState();
@@ -263,6 +263,116 @@ export function searchUser(displayName) {
       const userInfo = userInfoSnapshot.val();
 
       if (userInfo) dispatch(actionCreators.addEntityAction('userSearchResult', userInfo));
+    });
+  };
+}
+
+export function checkFriendRequestSent(toUserId) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (!toUserId) return null;
+
+    const currentUserUid = state.user.uid;
+    const currentUserFriendRequestsRef = state.firebase.database().ref(`users/${currentUserUid}/friendRequests`);
+    const friendRequestsRef = state.firebase.database().ref('friendRequests');
+
+    return currentUserFriendRequestsRef.once('value').then((friendRequestsSnapshot) => {
+      const friendRequests = friendRequestsSnapshot.val();
+
+      const checkRequestPromiseArr = [];
+
+      if (friendRequests) {
+        const friendRequestsIdsArr = Object.keys(friendRequests);
+
+        for (let i = 0; i < friendRequestsIdsArr.length; i += 1) {
+          checkRequestPromiseArr.push(friendRequestsRef.child(friendRequestsIdsArr[i]).once('value').then((friendRequestSnapshot) => {
+            const friendRequest = friendRequestSnapshot.val();
+
+            let sentRequestId;
+            if (friendRequest && (friendRequest.to === toUserId)) {
+              sentRequestId = friendRequestsIdsArr[i];
+            }
+            return sentRequestId || false;
+          }));
+        }
+      }
+
+      return Promise.all(checkRequestPromiseArr).then((checkedRequestsArr) => {
+        let sentRequestId;
+
+        for (let i = 0; i < checkedRequestsArr.length; i += 1) {
+          if (checkedRequestsArr[i] !== false) sentRequestId = checkedRequestsArr[i];
+        }
+
+        return sentRequestId || false;
+      });
+    });
+  };
+}
+
+export function createFriendRequest(userId) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (!userId) return;
+
+    const currentUserUid = state.user.uid;
+    const currentUserFriendRequestsRef = state.firebase.database().ref(`users/${currentUserUid}/friendRequests`);
+    const toUserFriendRequestsRef = state.firebase.database().ref(`users/${userId}/friendRequests`);
+    const friendRequestsRef = state.firebase.database().ref('friendRequests');
+
+    const newfriendRequest = {
+      id: friendRequestsRef.push().key,
+      from: state.user.uid,
+      to: userId,
+      status: 'pending',
+      timestamp: new Date().getTime(),
+    };
+
+    currentUserFriendRequestsRef.update({
+      [newfriendRequest.id]: newfriendRequest.id,
+    });
+    toUserFriendRequestsRef.update({
+      [newfriendRequest.id]: newfriendRequest.id,
+    });
+    friendRequestsRef.update({
+      [newfriendRequest.id]: newfriendRequest,
+    });
+  };
+}
+
+export function cancelFriendRequest(userId, requestId) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (!userId || !requestId) return;
+
+    const currentUserUid = state.user.uid;
+    const currentUserFriendRequestsRef = state.firebase.database().ref(`users/${currentUserUid}/friendRequests`);
+    const toUserFriendRequestsRef = state.firebase.database().ref(`users/${userId}/friendRequests`);
+    const friendRequestsRef = state.firebase.database().ref('friendRequests');
+
+    const assignRequestNull = {
+      [requestId]: null,
+    };
+
+    friendRequestsRef.update(assignRequestNull);
+    currentUserFriendRequestsRef.update(assignRequestNull);
+    toUserFriendRequestsRef.update(assignRequestNull);
+  };
+}
+
+export function toggleFriendRequest(userId) {
+  return (dispatch) => {
+    if (!userId) return;
+
+    dispatch(checkFriendRequestSent(userId)).then((sentRequestId) => {
+      if (sentRequestId) {
+        dispatch(cancelFriendRequest(userId, sentRequestId));
+      } else {
+        dispatch(createFriendRequest(userId));
+      }
     });
   };
 }
@@ -285,9 +395,11 @@ export function toggleFriend(userId) {
           [userId]: null,
         });
       } else {
-        currentUserFriendsRef.update({
-          [userId]: userId,
-        });
+        dispatch(toggleFriendRequest(userId));
+
+        // currentUserFriendsRef.update({
+        //   [userId]: userId,
+        // });
       }
     });
   };

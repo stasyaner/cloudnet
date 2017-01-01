@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Glyphicon, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Glyphicon, ListGroup, ListGroupItem, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const LeftMenu = props => (
@@ -9,6 +9,9 @@ const LeftMenu = props => (
     </LinkContainer>
     <LinkContainer to="/newsFeed">
       <ListGroupItem>Новости</ListGroupItem>
+    </LinkContainer>
+    <LinkContainer to="/notifications">
+      <ListGroupItem>Уведомления <Badge>3</Badge></ListGroupItem>
     </LinkContainer>
     <LinkContainer to="/friends">
       <ListGroupItem>Друзья</ListGroupItem>
