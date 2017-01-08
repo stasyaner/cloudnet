@@ -1,7 +1,7 @@
 import objectAssign from 'object-assign';
 import firebase from 'firebase';
 import { START_FETCHING, END_FETCHING, ADD_ENTITY, REMOVE_ENTITY, USER_LOGIN, USER_LOGIN_ERROR,
-  USER_LOGOUT_ERROR, AUTHENTICATION_REQUIRED, CLEAR_ENTITY_GROUP } from '../actions';
+  USER_LOGOUT_ERROR, AUTHENTICATION_REQUIRED, CLEAR_ENTITY_GROUP, SET_FRIEND_REQUEST_SENT_FLAG } from '../actions';
 
 function getInitialState() {
   // Initialize Firebase
@@ -19,6 +19,7 @@ function getInitialState() {
     user: null,
     userLoginError: null,
     userLogoutError: null,
+    friendRequestSentFlag: null,
     entities: {
       users: {},
       news: {},
@@ -81,6 +82,11 @@ const rootReducer = (state = getInitialState(), action) => {
     case AUTHENTICATION_REQUIRED: {
       return objectAssign({}, state, {
         user: null,
+      });
+    }
+    case SET_FRIEND_REQUEST_SENT_FLAG: {
+      return objectAssign({}, state, {
+        friendRequestSentFlag: action.flag,
       });
     }
 

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import Friends from '../components/Wall/Friends';
 import UserInfo from '../components/Wall/UserInfo';
 import NewsFeed from '../components/Wall/NewsFeed';
-import { fetchUserWall, addNews, removeNews, like, updateActivity, uploadAvatar,
-  toggleFriend } from '../actions';
+import { fetchUserWall, addNews, removeNews, like, updateActivity, uploadAvatar, toggleFriend,
+  checkFriendRequestSentSetFlag } from '../actions';
 
 class WallContainer extends Component {
   constructor(...restParams) {
@@ -21,6 +21,8 @@ class WallContainer extends Component {
 
   componentWillMount() {
     this.props.fetchUserWall();
+    this.props.checkFriendRequestSentSetFlag();
+
     if (this.props.currentUserUid) {
       this.props.updateActivity(this.props.currentUserUid);
     }
@@ -29,6 +31,7 @@ class WallContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.userId !== nextProps.userId) {
       nextProps.fetchUserWall();
+      nextProps.checkFriendRequestSentSetFlag();
 
       // here it's not principal which props instance to use
       this.props.updateActivity(this.props.currentUserUid);
@@ -58,6 +61,7 @@ class WallContainer extends Component {
           toggleModal={this.toggleUploadAvatarModal}
           currentUserUid={this.props.currentUserUid}
           isFriend={this.props.isFriend}
+          friendRequestSentFlag={this.props.friendRequestSentFlag}
           userInfo={this.props.userInfo}
           uploadAvatar={this.props.uploadAvatar}
           toggleFriend={this.props.toggleFriend}
@@ -95,7 +99,7 @@ WallContainer.propTypes = {
       React.PropTypes.string,
       React.PropTypes.number,
       React.PropTypes.object,
-    ])
+    ]),
   ).isRequired,
   news: PropTypes.objectOf(PropTypes.object).isRequired,
   fetchUserWall: PropTypes.func.isRequired,
@@ -116,6 +120,7 @@ const mapStateToProps = (state, ownProps) => (
     users: state.entities.users,
     userInfo: state.entities.users[ownProps.params.userId] || {},
     news: state.entities.news,
+    friendRequestSentFlag: state.friendRequestSentFlag,
   }
 );
 
@@ -128,6 +133,7 @@ const mapDispatchToProps = (dispatch, ownProps) => (
     updateActivity: userId => dispatch(updateActivity(userId)),
     uploadAvatar: (avatar, avatarContext) => dispatch(uploadAvatar(avatar, avatarContext)),
     toggleFriend: () => dispatch(toggleFriend(ownProps.params.userId)),
+    checkFriendRequestSentSetFlag: () => dispatch(checkFriendRequestSentSetFlag(ownProps.params.userId)),
   }
 );
 

@@ -58,6 +58,7 @@ function getStatusFromTimestamp(lastActiveTimestamp) {
 const UserInfo = (props) => {
   let { birthday } = props.userInfo;
   const { city = '-', displayName, university = '-', signature, avatar, lastActiveTimestamp } = props.userInfo;
+  const { isFriend, showModal, toggleModal, uploadAvatar, friendRequestSentFlag } = props;
 
   const status = getStatusFromTimestamp(lastActiveTimestamp);
 
@@ -71,20 +72,29 @@ const UserInfo = (props) => {
   let toggleFriendButton = '';
   if (props.userInfo.id === props.currentUserUid) {
     avatarContent = (
-      <a onClick={props.toggleModal}>
+      <a onClick={toggleModal}>
         <img alt="avatar" src={avatarURL} />
       </a>
     );
     changeAvatar = (
       <UploadAvatarModal
-        showModal={props.showModal}
-        toggleModal={props.toggleModal}
-        uploadAvatar={props.uploadAvatar}
+        showModal={showModal}
+        toggleModal={toggleModal}
+        uploadAvatar={uploadAvatar}
       />
     );
   } else {
-    const toggleFriendButtonBsStyle = props.isFriend ? 'danger' : 'primary';
-    const toggleFriendButtonContent = props.isFriend ? 'Удалить из друзей' : 'Подать заявку в друзья';
+    const toggleFriendButtonBsStyle = isFriend ? 'danger' : 'primary';
+    let toggleFriendButtonContent = 'loading...';
+
+    if (isFriend) {
+      toggleFriendButtonContent = 'Удалить из друзей';
+    } else if (friendRequestSentFlag) {
+      toggleFriendButtonContent = 'Отменить заявку';
+    } else {
+      toggleFriendButtonContent = 'Подать заявку в друзья';
+    }
+
     toggleFriendButton = (
       <Col md={12}>
         <Button
@@ -156,7 +166,7 @@ UserInfo.propTypes = {
       React.PropTypes.string,
       React.PropTypes.number,
       React.PropTypes.object,
-    ])
+    ]),
   ).isRequired,
   currentUserUid: PropTypes.string.isRequired,
   showModal: PropTypes.bool.isRequired,

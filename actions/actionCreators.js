@@ -67,3 +67,10 @@ export function authenticationRequiredAction() {
     type: actionTypes.AUTHENTICATION_REQUIRED,
   };
 }
+
+export function setFriendRequestSentFlagAction(flag) {
+  return {
+    type: actionTypes.SET_FRIEND_REQUEST_SENT_FLAG,
+    flag,
+  };
+}

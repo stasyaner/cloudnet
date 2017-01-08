@@ -2,6 +2,26 @@ import { browserHistory } from 'react-router';
 import objectAssign from 'object-assign';
 import * as actionCreators from './actionCreators';
 
+export function fetchCurrentUserFriendRequests() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const currentUserUid = state.user.uid;
+
+    const userFriendRequestsRef = state.firebase.database().ref(`users/${currentUserUid}/friendRequests`);
+    const friendRequestsRef = state.firebase.database().ref('friendRequests');
+
+    userFriendRequestsRef.on('child_added', (friendRequestIdSnapshot) => {
+      const friendRequestId = friendRequestIdSnapshot.val();
+
+      friendRequestsRef.child(friendRequestId).on('value', (friendRequestSnapshot) => {
+        const friendRequest = friendRequestSnapshot.val();
+
+        dispatch(actionCreators.addEntityAction('currentUserFriendRequests', friendRequest));
+      });
+    });
+  };
+}
+
 export function userLogin(user) {
   return (dispatch, getState) => {
     if (!user) return;
@@ -12,6 +32,7 @@ export function userLogin(user) {
       if (userInfo) {
         delete userInfo.id;
         dispatch(actionCreators.userLoginAction(objectAssign({}, user, userInfo)));
+        //dispatch(fetchCurrentUserFriendRequests());
       }
     });
   };
@@ -19,7 +40,7 @@ export function userLogin(user) {
 
 export function login(email, password) {
   return (dispatch, getState) => {
-    if (!email || !password) return;
+    if (!email || !password) return null;
 
     const state = getState();
     return state.firebase.auth().signInWithEmailAndPassword(email, password)
@@ -267,6 +288,31 @@ export function searchUser(displayName) {
   };
 }
 
+export function checkFriendRequestSent_shit(toUserId) {
+  return (dispatch, getState) => {
+    if (!toUserId) return null;
+
+    const state = getState();
+    let sentRequestId = null;
+
+    if (state.entities.currentUserFriendRequests) {
+      const currentUserFriendRequestsArr = Object.keys(state.entities.currentUserFriendRequests);
+
+      if (currentUserFriendRequestsArr.length > 0) {
+        for (let i = 0; i < currentUserFriendRequestsArr.length; i += 1) {
+          if (currentUserFriendRequestsArr[i].to === toUserId) {
+            sentRequestId = currentUserFriendRequestsArr[i].id;
+          }
+        }
+      }
+    }
+
+    console.log(sentRequestId);
+
+    return sentRequestId;
+  };
+}
+
 export function checkFriendRequestSent(toUserId) {
   return (dispatch, getState) => {
     const state = getState();
@@ -299,7 +345,7 @@ export function checkFriendRequestSent(toUserId) {
       }
 
       return Promise.all(checkRequestPromiseArr).then((checkedRequestsArr) => {
-        let sentRequestId;
+        let sentRequestId = null;
 
         for (let i = 0; i < checkedRequestsArr.length; i += 1) {
           if (checkedRequestsArr[i] !== false) sentRequestId = checkedRequestsArr[i];
@@ -307,6 +353,42 @@ export function checkFriendRequestSent(toUserId) {
 
         return sentRequestId || false;
       });
+    });
+  };
+}
+
+export function checkFriendRequestSentSetFlag(userId) {
+  return (dispatch) => {
+    dispatch(checkFriendRequestSent(userId)).then((sentRequestId) => {
+      dispatch(actionCreators.setFriendRequestSentFlagAction(sentRequestId !== false));
+    });
+  };
+}
+
+export function checkFriendRequestSent_shit2(toUserId) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (!toUserId) return;
+
+    const currentUserUid = state.user.uid;
+    const currentUserFriendRequestsRef = state.firebase.database().ref(`users/${currentUserUid}/friendRequests`);
+    const toUserFriendRequestsRef = state.firebase.database().ref(`users/${toUserId}/friendRequests`);
+    const friendRequestsRef = state.firebase.database().ref('friendRequests');
+
+    currentUserFriendRequestsRef.on('value', (friendRequestsIdsSnapshot) => {
+      const friendRequestsIds = friendRequestsIdsSnapshot.val();
+      const friendRequestsIdsArr = Object.keys(friendRequestsIds);
+      let sentRequestId = null;
+
+      for (let i = 0; i < friendRequestsIdsArr.length; i += 1) {
+        friendRequestsRef.child(friendRequestsIdsArr[i]).on('value', (friendRequestSnapshot) => {
+          const friendRequest = friendRequestSnapshot.val();
+
+          if (friendRequest.to === toUserId) sentRequestId = friendRequest.to;
+          console.log(sentRequestId);
+        });
+      }
     });
   };
 }
@@ -370,8 +452,10 @@ export function toggleFriendRequest(userId) {
     dispatch(checkFriendRequestSent(userId)).then((sentRequestId) => {
       if (sentRequestId) {
         dispatch(cancelFriendRequest(userId, sentRequestId));
+        dispatch(actionCreators.setFriendRequestSentFlagAction(false));
       } else {
         dispatch(createFriendRequest(userId));
+        dispatch(actionCreators.setFriendRequestSentFlagAction(true));
       }
     });
   };
