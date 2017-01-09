@@ -113,7 +113,7 @@ const UserInfo = (props) => {
   let age;
   if (birthday) {
     birthday = new Date(birthday);
-    age = new Date().getFullYear() - birthday.getFullYear();
+    age = new Date(new Date() - birthday).getFullYear() - 1970;
     if (birthday.toLocaleString) {
       birthday = birthday.toLocaleString('ru', {
         year: 'numeric',
