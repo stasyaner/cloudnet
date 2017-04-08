@@ -4,33 +4,30 @@ var config = require('./webpack.config')
 
 module.exports = {
   //devtool: 'cheap-module-eval-source-map',
-  entry:  './index',
+  entry:  ['./index'],
   output: {
-    path: path.join(__dirname, 'public'),
+    path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js',
     publicPath: '/static/'
   },
-  plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin()
-  ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
-        loader: 'babel?cacheDirectory'
+        loader: 'babel-loader?cacheDirectory'
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.less$/,
-        loaders: ['style-loader', 'css-loader', 'less-loader']
+        use: ['style-loader', 'css-loader', 'less-loader']
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
       ,
       {
@@ -43,8 +40,8 @@ module.exports = {
       }
     ]
   },
-  resolve:{
-    extensions: ['', '.js', '.jsx', '.less', '.css', '.scss']
+  resolve: {
+    extensions: ['.js', '.jsx', '.less', '.css', '.scss']
   },
   devServer: {
     // contentBase: './public',
@@ -61,13 +58,10 @@ module.exports = {
   }
 }
 
-/*
- * If bundling for production, optimize output
- */
+// If bundling for production, optimize output
 if (process.env.NODE_ENV === 'production') {
   config.devtool = false;
   config.plugins = [
-    new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.UglifyJsPlugin({comments: false}),
     new webpack.DefinePlugin({
       'process.env': {NODE_ENV: JSON.stringify('production')}

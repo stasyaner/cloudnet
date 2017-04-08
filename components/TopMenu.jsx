@@ -12,14 +12,14 @@ const TopMenu = (props) => {
         </Navbar.Brand>
       </Navbar.Header>
       <Navbar.Collapse>
+        <Navbar.Form pullLeft>
+          <FormGroup>
+            <InputGroup>
+              <FormControl type="text" placeholder="Поиск" />
+            </InputGroup>
+          </FormGroup>
+        </Navbar.Form>
         <Nav>
-          <Navbar.Form pullLeft>
-            <FormGroup>
-              <InputGroup>
-                <FormControl type="text" placeholder="Поиск" />
-              </InputGroup>
-            </FormGroup>
-          </Navbar.Form>
           <NavItem id="top-menu-fast-backward">
             <Glyphicon glyph="fast-backward" />
           </NavItem>

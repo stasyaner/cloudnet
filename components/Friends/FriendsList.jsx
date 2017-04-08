@@ -16,7 +16,7 @@ const FriendsList = (props) => {
   if (friendsNumber > 0) {
     for (let i = 0; i < friendsNumber; i += 1) {
       if (users[userFriendsIdList[i]]) {
-        friendsJSX.push(
+        const friendItem = (
           <div className="friend-item" key={userFriendsIdList[i]}>
             <div className="friend-avatar">
               <Link to={`/theWall/${userFriendsIdList[i]}`}>
@@ -51,55 +51,21 @@ const FriendsList = (props) => {
             </div>
           </div>
         );
+
+        friendsJSX.push(friendItem);
       }
     }
-    // userFriendsIdList.forEach((friendId) => {
-    //   friendsJSX.push(
-    //     <div className="friend-item" key={friendId}>
-    //       <div className="friend-avatar">
-    //         <Link to={`/theWall/${friendId}`}>
-    //           <img alt="avatar" src={userList[friendId].avatar.middle} />
-    //         </Link>
-    //       </div>
-    //       <div className="friend-right-pane">
-    //         <Link to={`/theWall/${friendId}`}>
-    //           <div className="friend-name">
-    //             {userList[friendId].displayName}
-    //           </div>
-    //         </Link>
-    //         <div className="friend-dialog">
-    //           <Link to="/dialog/123">
-    //             Перейти к диалогу
-    //           </Link>
-    //         </div>
-    //         <div className="friend-remove">
-    //           <a
-    //             onClick={
-    //               (event) => {
-    //                 event.preventDefault();
-    //                 if (confirm('Вы действительно хотите удалить этого друга?')) {
-    //                   // do smth
-    //                 }
-    //               }
-    //             }
-    //           >
-    //             Удалить из друзей
-    //           </a>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   );
-    // });
   } else {
     friendsJSX.push(<div key="no-userList-message">Начните вводить имя, чтобы найти друзей</div>);
   }
 
-  return <div id="userList-list">{friendsJSX}</div>;
+  return <div id="friend-list">{friendsJSX}</div>;
 };
 
 FriendsList.propTypes = {
   userSearchResult: PropTypes.objectOf(PropTypes.object),
-  friends: PropTypes.objectOf(PropTypes.object),
+  userFriends: PropTypes.objectOf(PropTypes.string),
+  users: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default FriendsList;

@@ -3,4 +3,4 @@ export { START_FETCHING, END_FETCHING, ADD_ENTITY, REMOVE_ENTITY, CHECKING_AUTHE
   SET_FRIEND_REQUEST_SENT_FLAG } from './actionTypes';
 export { checkAuthentication, login, logout, fetchUserWall, addNews, removeNews, like, userLogin,
   fetchUserInfo, fetchUserNews, fetchUserFriends, updateActivity, uploadAvatar, searchUser,
-  toggleFriend, checkFriendRequestSent, checkFriendRequestSentSetFlag } from './firebaseThunks';
+  toggleFriend, checkFriendRequestSent, checkFriendRequestSentSetFlag, fetchCurrentUserFriendRequests } from './firebaseThunks';

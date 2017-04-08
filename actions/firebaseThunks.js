@@ -2,26 +2,6 @@ import { browserHistory } from 'react-router';
 import objectAssign from 'object-assign';
 import * as actionCreators from './actionCreators';
 
-export function fetchCurrentUserFriendRequests() {
-  return (dispatch, getState) => {
-    const state = getState();
-    const currentUserUid = state.user.uid;
-
-    const userFriendRequestsRef = state.firebase.database().ref(`users/${currentUserUid}/friendRequests`);
-    const friendRequestsRef = state.firebase.database().ref('friendRequests');
-
-    userFriendRequestsRef.on('child_added', (friendRequestIdSnapshot) => {
-      const friendRequestId = friendRequestIdSnapshot.val();
-
-      friendRequestsRef.child(friendRequestId).on('value', (friendRequestSnapshot) => {
-        const friendRequest = friendRequestSnapshot.val();
-
-        dispatch(actionCreators.addEntityAction('currentUserFriendRequests', friendRequest));
-      });
-    });
-  };
-}
-
 export function userLogin(user) {
   return (dispatch, getState) => {
     if (!user) return;
@@ -32,7 +12,6 @@ export function userLogin(user) {
       if (userInfo) {
         delete userInfo.id;
         dispatch(actionCreators.userLoginAction(objectAssign({}, user, userInfo)));
-        //dispatch(fetchCurrentUserFriendRequests());
       }
     });
   };
@@ -161,15 +140,53 @@ export function fetchUserFriends(id) {
         }
       });
     });
+  };
+}
 
-    // userFriendsRef.on('child_removed', (friendIdSnapshot) => {
-    //   state = getState();
-    //   const friendId = friendIdSnapshot.val();
-    //
-    //   if (friendId && state.entities.users[friendId]) {
-    //     dispatch(actionCreators.removeEntityAction('users', friendId));
-    //   }
-    // });
+export function fetchUser(userId) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (!userId) return;
+
+    const userRef = state.firebase.database().ref(`users/${userId}`);
+
+    userRef.on('value', (userInfoSnapshot) => {
+      const userInfo = userInfoSnapshot.val();
+
+      if (userInfo) dispatch(actionCreators.addEntityAction('users', userInfo));
+    });
+  };
+}
+
+export function fetchCurrentUserFriendRequests() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const currentUserUid = state.user.uid;
+    const usersEntity = state.entities.users;
+
+    const userFriendRequestsRef = state.firebase.database().ref(`users/${currentUserUid}/friendRequests`);
+    const friendRequestsRef = state.firebase.database().ref('friendRequests');
+
+    userFriendRequestsRef.on('child_added', (friendRequestIdSnapshot) => {
+      const friendRequestId = friendRequestIdSnapshot.val();
+
+      friendRequestsRef.child(friendRequestId).on('value', (friendRequestSnapshot) => {
+        const friendRequest = friendRequestSnapshot.val();
+
+        if ((friendRequest.to !== currentUserUid) && (!usersEntity[friendRequest.to])) {
+          dispatch(fetchUser(friendRequest.to));
+        }
+
+        dispatch(actionCreators.addEntityAction('currentUserFriendRequests', friendRequest));
+      });
+    });
+
+    userFriendRequestsRef.on('child_removed', (friendRequestIdSnapshot) => {
+      const friendRequestId = friendRequestIdSnapshot.val();
+
+      dispatch(actionCreators.removeEntityAction('currentUserFriendRequests', friendRequestId));
+    });
   };
 }
 

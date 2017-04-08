@@ -110,13 +110,15 @@ WallContainer.propTypes = {
   uploadAvatar: PropTypes.func.isRequired,
   toggleFriend: PropTypes.func.isRequired,
   isFriend: PropTypes.bool.isRequired,
+  checkFriendRequestSentSetFlag: PropTypes.func.isRequired,
+  friendRequestSentFlag: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => (
   {
     currentUserUid: state.user.uid,
     userId: ownProps.params.userId,
-    isFriend: {}.hasOwnProperty.call(state.user.friends, ownProps.params.userId),
+    isFriend: {}.hasOwnProperty.call(state.user.friends || {}, ownProps.params.userId),
     users: state.entities.users,
     userInfo: state.entities.users[ownProps.params.userId] || {},
     news: state.entities.news,
@@ -133,7 +135,8 @@ const mapDispatchToProps = (dispatch, ownProps) => (
     updateActivity: userId => dispatch(updateActivity(userId)),
     uploadAvatar: (avatar, avatarContext) => dispatch(uploadAvatar(avatar, avatarContext)),
     toggleFriend: () => dispatch(toggleFriend(ownProps.params.userId)),
-    checkFriendRequestSentSetFlag: () => dispatch(checkFriendRequestSentSetFlag(ownProps.params.userId)),
+    checkFriendRequestSentSetFlag:
+      () => dispatch(checkFriendRequestSentSetFlag(ownProps.params.userId)),
   }
 );
 

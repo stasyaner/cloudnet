@@ -13,11 +13,11 @@ const Friends = (props) => {
       if (users[userFriendIdList[i]]) {
         userFriendsJSX.push(
           <Link to={`/theWall/${userFriendIdList[i]}`} key={userFriendIdList[i]}>
-            <div className="the-wall-friend">
-              <div className="the-wall-friend-avatar">
+            <div className="side-panel right-panel">
+              <div className="small-avatar">
                 <img alt="avatar" src={users[userFriendIdList[i]].avatar.small} />
               </div>
-              <div className="the-wall-friend-name">
+              <div className="side-panel-friend-name">
                 {users[userFriendIdList[i]].displayName}
               </div>
             </div>
@@ -63,7 +63,7 @@ const Friends = (props) => {
 
 Friends.propTypes = {
   users: PropTypes.objectOf(PropTypes.object).isRequired,
-  userFriends: PropTypes.objectOf(PropTypes.shape({ confirmed: PropTypes.bool })),
+  userFriends: PropTypes.objectOf(PropTypes.string),
   currentUserUid: PropTypes.string.isRequired,
   userInfoId: PropTypes.string.isRequired,
 };

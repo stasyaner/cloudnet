@@ -132,13 +132,13 @@ a:hover , a:focus {
   padding: 5px 10px 10px 10px;
 }
 
-#the-wall-friends .the-wall-friend-avatar {
+.small-avatar {
   width: 25px;
   height: 25px;
   float: left;
 }
 
-#the-wall-friends .the-wall-friend-avatar img {
+.small-avatar img {
   height: 25px;
   width: 25px;
 }
@@ -149,7 +149,7 @@ a:hover , a:focus {
   padding-top: 5px;
 }
 
-#the-wall-friends .the-wall-friend-name {
+.side-panel-friend-name {
   margin-left: 5px;
   float: left;
   line-height: 25px;
@@ -237,8 +237,22 @@ a:hover , a:focus {
   width: 955px;
 }
 
-#the-wall-publish-news-textarea, #friend-search-textarea {
+#the-wall-publish-news-textarea {
   width: 100%;
+  padding: 15px;
+  outline: none;
+  color: black;
+  border: 1px solid #ddd;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  resize: none;
+  min-height: 40px;
+  border-radius: 0;
+}
+
+#friend-search-textarea {
+  width: 740px;
+  clear: right;
   padding: 15px;
   outline: none;
   color: black;
@@ -272,6 +286,7 @@ a:hover , a:focus {
   position: relative;
   left: 710px;
   top: -15px;
+  width: 15px;
   margin-bottom: -15px;
 }
 
@@ -286,11 +301,11 @@ a:hover , a:focus {
   color: #cc0000;
 }
 
-#the-wall-friends .panel-title {
+#the-wall-friends .panel-title, #friend-request-list .panel-title {
   font-size: 14px;
 }
 
-#the-wall-friends .panel-heading div div {
+#the-wall-friends .panel-heading div div, #friend-request-list .panel-heading div div {
   float: left;
   padding-right: 5px;
 }
@@ -325,6 +340,25 @@ a:hover , a:focus {
 
 .friend-remove a:hover {
   opacity: 1;
+}
+
+#friend-search {
+  float: right;
+}
+
+#friend-list {
+  float: left;
+}
+
+#friend-request-list {
+  width: 215px;
+  float: right;
+  padding-left: 15px;
+}
+
+.friend-request-item {
+  float: left;
+  width: 100%;
 }
 
 .loadingImg {

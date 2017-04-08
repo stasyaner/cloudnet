@@ -80,7 +80,7 @@ function getNewsFeed(news, authorId, currentUserId, users, like, removeNews) {
           <Panel footer={footerContent} key={news[key].id}>
             {deleteNews}
             {news[key].content}
-          </Panel>
+          </Panel>,
         );
       }
     });

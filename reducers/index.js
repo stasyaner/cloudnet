@@ -19,10 +19,11 @@ function getInitialState() {
     user: null,
     userLoginError: null,
     userLogoutError: null,
-    friendRequestSentFlag: null,
+    friendRequestSentFlag: false,
     entities: {
       users: {},
       news: {},
+      currentUserFriendRequests: {},
     },
   };
 

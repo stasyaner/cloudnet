@@ -4,7 +4,7 @@ import { logout } from '../actions';
 import LeftMenu from '../components/LeftMenu';
 import TopMenu from '../components/TopMenu';
 
-// It should be class for now. Later it will be enhaced
+// It must be class for now. Later it will be enhaced
 class CloudNetContainer extends Component {
   constructor(...restParams) {
     super(...restParams);

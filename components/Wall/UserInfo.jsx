@@ -96,7 +96,7 @@ const UserInfo = (props) => {
     }
 
     toggleFriendButton = (
-      <Col md={12}>
+      <Col md={12} xs={12}>
         <Button
           className="toggle-friend"
           bsStyle={toggleFriendButtonBsStyle}
@@ -138,19 +138,19 @@ const UserInfo = (props) => {
         <div id="the-wall-profile-info-signature">{signature}</div>
         <div id="the-wall-profile-info-delimiter"><hr /></div>
 
-        <Col md={3}>Родился:</Col>
-        <Col md={9}>
+        <Col md={3} xs={3}>Родился:</Col>
+        <Col md={9} xs={9}>
           <div id="the-wall-profile-info-birthday">
             {birthday}, {age} год(-а)</div>
         </Col>
 
-        <Col md={3}>Город:</Col>
-        <Col md={9}>
+        <Col md={3} xs={3}>Город:</Col>
+        <Col md={9} xs={9}>
           <div id="the-wall-profile-info-city">{city}</div>
         </Col>
 
-        <Col md={3}>Место учебы:</Col>
-        <Col md={9}>
+        <Col md={3} xs={3}>Место учебы:</Col>
+        <Col md={9} xs={9}>
           <div id="the-wall-profile-info-univercity">{university}</div>
         </Col>
 
@@ -174,6 +174,7 @@ UserInfo.propTypes = {
   toggleModal: PropTypes.func.isRequired,
   toggleFriend: PropTypes.func.isRequired,
   isFriend: PropTypes.bool.isRequired,
+  friendRequestSentFlag: PropTypes.bool.isRequired,
 };
 
 export default UserInfo;
